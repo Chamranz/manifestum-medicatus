@@ -12,9 +12,9 @@ def _detect_unique_key(items: List[Dict]) -> Optional[str]:
     """Рекурсивно объединяем два словаря. override перетирает base.
 
         Args:
-            base (Any):
+            items (List[Dict]):
                 Базовый ямлик
-            override (Any):
+            Optional (str:
                 Ямлик с delta параметрами
 
         Returns:
@@ -29,8 +29,8 @@ def _detect_unique_key(items: List[Dict]) -> Optional[str]:
         common_keys &= set(item.keys())
         if not common_keys:
             return None
-    # Ищем кандидатов на уникальный ключ (часто: name, id, AGENT_NAME, NAME и т.д.)
-    typical_keys = {"name", "id", "NAME", "AGENT_NAME", "branch", "host", "CN"}
+    # Ищем уникальный ключ
+    typical_keys = {"name", "id", "NAME", "AGENT_NAME", "branch", "CN"}
     for key in typical_keys:
         if key in common_keys:
             return key
@@ -64,10 +64,12 @@ def deep_merge(base: Any, override: Any) -> Any:
         all_items = base + override
         if all(isinstance(x, dict) for x in all_items):
             unique_key = _detect_unique_key(all_items)
+            print(f"all_items: {all_items}, unique_key: {unique_key}")
             if unique_key:
                 base_map = {item[unique_key]: item for item in base if unique_key in item}
+                print(f"base_map: {base_map}")
                 override_map = {item[unique_key]: item for item in override if unique_key in item}
-
+                print(f"override_map: {override_map}")
                 merged = {}
 
                 for key, item in base_map.items():
