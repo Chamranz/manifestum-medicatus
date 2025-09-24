@@ -1,6 +1,0 @@
-- AGENT_NAME: document-classifier
-  RESOURCES:
-    REPLICAS: 4
-  ENV:
-    LOG_LEVEL: DEBUG
-    NEW_VAR: hello

@@ -1,6 +1,10 @@
-- AGENT_NAME: document-classifier
-  RESOURCES:
-    REPLICAS: 4
-  ENV:
-    LOG_LEVEL: DEBUG
-    NEW_VAR: "hello"
+MTLS:
+  - NAME: mtls-gigachat # Уникальное имя интеграции
+    HOST: "gigachat-ift.sberdevices.delta.sbrf.ru" # Хост внешнего сервиса
+    PORT: 443 # Порт внешнего сервиса
+
+KAFKA:
+  - NAME: tvldq-btaaf0003 # Уникальное имя интеграции. Required
+    HOST: tvldq-btaaf0003.delta.sbrf.ru # Хост. Required
+    IP: 10.26.118.66  # IP адрес. Required
+    PORT: 9093 # Порт. Required
