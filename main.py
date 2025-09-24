@@ -4,12 +4,11 @@ import os
 import yaml
 from dotenv import load_dotenv
 from merger import deep_merge
+from reader import load_yaml
+
 
 load_dotenv()
 
-def load_yaml(path):
-    with open(path, encoding="utf-8") as f:
-        return yaml.safe_load(f) or {}
 
 def save_yaml(data, output_name):
     output_path = os.getenv("OUTPUT_PATH", ".")

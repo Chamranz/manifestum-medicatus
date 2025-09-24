@@ -8,8 +8,36 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-def _detect_unique_key():
-    ...
+def _detect_unique_key(items: List[Dict]) -> Optional[str]:
+    """Рекурсивно объединяем два словаря. override перетирает base.
+
+        Args:
+            base (Any):
+                Базовый ямлик
+            override (Any):
+                Ямлик с delta параметрами
+
+        Returns:
+            dict: Итоговый ямлик."""
+    if not items:
+        return None
+    # Получаем пересечение ключей всех элементов
+    common_keys = set(items[0].keys())
+    for item in items[1:]:
+        if not isinstance(item, dict):
+            return None
+        common_keys &= set(item.keys())
+        if not common_keys:
+            return None
+    # Ищем кандидатов на уникальный ключ (часто: name, id, AGENT_NAME, NAME и т.д.)
+    typical_keys = {"name", "id", "NAME", "AGENT_NAME", "branch", "host", "CN"}
+    for key in typical_keys:
+        if key in common_keys:
+            return key
+    # Если нет стандартных — пробуем первый общий ключ
+    if common_keys:
+        return next(iter(common_keys))
+    return None
 
 
 def deep_merge(base: Any, override: Any) -> Any:
@@ -41,3 +69,32 @@ def deep_merge(base: Any, override: Any) -> Any:
                 override_map = {item[unique_key]: item for item in override if unique_key in item}
 
                 merged = {}
+
+                for key, item in base_map.items():
+                    merged[key] = item.copy()
+
+                for key, item in override_map.items():
+                    if key in merged:
+                        merged[key] = deep_merge(merged[key], item)
+                    else:
+                        merged[key] = item
+
+                result = []
+                seen = set()
+                for item in base:
+                    if unique_key in item:
+                        k = item[unique_key]
+                        if k in merged:
+                            result.append(merged[k])
+                            seen.add(k)
+                for item in override:
+                    if unique_key in item and item[unique_key] not in seen:
+                        result.append(item)
+                        seen.add(item[unique_key])
+                return result
+
+        return override
+
+    else:
+        return override
+
