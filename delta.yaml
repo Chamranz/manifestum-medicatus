@@ -1,10 +1,57 @@
-MTLS:
-  - NAME: mtls-gigachat # Уникальное имя интеграции
-    HOST: "gigachat-ift.sberdevices.delta.sbrf.ru" # Хост внешнего сервиса
-    PORT: 443 # Порт внешнего сервиса
+- AGENT_NAME: strategy-selection
+  RESOURCES:
+    # Количество реплик. Optional
+    REPLICAS: 2
+    LIMITS:
+      # Limits CPU. Optional
+      CPU: 500m
+      # Limits Memory. Optional
+      MEMORY: 1024Mi
+    REQUESTS:
+      # Requests CPU. Optional
+      CPU: 250m
+      # Requests Memory. Optional
+      MEMORY: 512Mi
+    PROBE:
+    # Параметры Readiness probe. Optional
+    READINESS:
+      # Время задержки (в секундах) перед первым выполнением. Optional
+      INITIAL_DELAY_SECONDS: 30
+      # Максимальное время ожидания ответа от приложения. Optional
+      TIMEOUT_SECONDS: 5
+      # Интервал между последовательными проверками. Optional
+      PERIOD_SECONDS: 15
+      # Количество подряд успешных проверок. Optional
+      SUCCESS_THRESHOLD: 1
+      # Количество подряд неудачных проверок. Optional
+      FAILURE_THRESHOLD: 3
+    # Параметры Liveness probe. Optional
+    LIVENESS:
+      # Время задержки (в секундах) перед первым выполнением. Optional
+      INITIAL_DELAY_SECONDS: 30
+      # Максимальное время ожидания ответа от приложения. Optional
+      TIMEOUT_SECONDS: 5
+      # Интервал между последовательными проверками. Optional
+      PERIOD_SECONDS: 60
+      # Количество подряд успешных проверок. Optional
+      SUCCESS_THRESHOLD: 1
+      # Количество подряд неудачных проверок. Optional
+      FAILURE_THRESHOLD: 3
+  # Блок с переменными окружения передаваемых агенту. Optional
+  ENV:
+    # Пример переменной окружения.
+    LOG_FILE: '/var/log/app/app.log'
+    LOG_LEVEL: 'DEBUG'
+    # кэ агента (модуля)
+    AGENT_ID: 'CI09708620'
 
-KAFKA:
-  - NAME: tvldq-btaaf0003 # Уникальное имя интеграции. Required
-    HOST: tvldq-btaaf0003.delta.sbrf.ru # Хост. Required
-    IP: 10.26.118.66  # IP адрес. Required
-    PORT: 9093 # Порт. Required
+    GIGACHAT_BASE_URL: 'http://gigachat-ift.sberdevices.delta.sbrf.ru:8080/v1'
+    GIGACHAT_TIMEOUT: '60'
+    GIGACHAT_RETRY_LIMIT: '3'
+    GIGACHAT_RETRY_INCREMENT: '15'
+
+    LIVENESS_PROBE_PATH: '/health/liveness'
+    READINESS_PROBE_PATH: '/health/readiness'
+
+    NLTK_DATA: '/app/resources/nltk_data'
+    MYSTEM_BIN: '/app/resources/mystem/mystem'
