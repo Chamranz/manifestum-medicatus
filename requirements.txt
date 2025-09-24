@@ -1,0 +1,12 @@
+annotated-types==0.7.0
+darglint==1.8.1
+flake8==7.3.0
+mccabe==0.7.0
+pycodestyle==2.14.0
+pydantic==2.11.9
+pydantic_core==2.33.2
+pyflakes==3.4.0
+python-dotenv==1.1.1
+PyYAML==6.0.2
+typing-inspection==0.4.1
+typing_extensions==4.15.0

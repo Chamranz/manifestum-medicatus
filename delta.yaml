@@ -1,0 +1,4 @@
+MTLS:
+  - NAME: mtls-gigachat
+    HOST: "gigachat-ift.sberdevices.delta.sbrf.ru"
+    PORT: 443 # Порт внешнего сервиса

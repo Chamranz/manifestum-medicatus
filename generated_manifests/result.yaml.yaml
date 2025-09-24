@@ -1,0 +1,9 @@
+- AGENT_NAME: document-classifier
+  RESOURCES:
+    REPLICAS: 4
+    LIMITS:
+      CPU: 500m
+      MEMORY: 1024Mi
+  ENV:
+    LOG_LEVEL: DEBUG
+    NEW_VAR: hello
