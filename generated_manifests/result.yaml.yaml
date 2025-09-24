@@ -1,36 +1,6 @@
-MTLS:
-- NAME: mtls-gigaspravka
-  HOST: gigaspravka.apps.azwx5oj1.k8s.delta.sbrf.ru
-  PORT: 443
-- NAME: mtls-olavatar
-  HOST: olavatar-pg-aigw.apps.dev-gen1-dm.delta.sbrf.ru
-  PORT: 443
-- NAME: mtls-gigachat
-  HOST: gigachat-ift.sberdevices.delta.sbrf.ru
-  PORT: 443
-MTLS_OTT:
-- NAME: audit-ott
-  HOST: rest-ott-ift-uaudit.delta.sbrf.ru
-  PORT: 443
-KAFKA:
-- NAME: tvldq-audi00001
-  HOST: tvldq-audi00001.delta.sbrf.ru
-  IP: 10.18.182.121
-  PORT: 9093
-- NAME: tvldq-audi00002
-  HOST: tvldq-audi00002.delta.sbrf.ru
-  IP: 10.18.182.86
-  PORT: 9093
-POSTGRES:
-- NAME: postgres-sberdocs
-  HOST: tsldd-aah000001.delta.sbrf.ru
-  IP: 10.28.171.169
-  PORT: 6544
-  INNERPORT: 8000
-INGRESS_WHITELIST:
-- NAME: autotests
-  CN: .*CN=ci08392058-ift-aef,.*
-  PATH: .*
-- NAME: rgs
-  CN: .*CN=00CA0005PCAPCC360RGSSRV,.*
-  PATH: /api/v1/lpr/giga-insights|/api/v1/lpr/rendered-data|/api/v1/lpr/data-legend|/api/v1/company/giga-insights|/api/v1/company/rendered-data|/api/v1/company/data-legend
+- AGENT_NAME: document-classifier
+  RESOURCES:
+    REPLICAS: 4
+  ENV:
+    LOG_LEVEL: DEBUG
+    NEW_VAR: hello

@@ -1,4 +1,6 @@
-MTLS:
-  - NAME: mtls-gigachat
-    HOST: "gigachat-ift.sberdevices.delta.sbrf.ru"
-    PORT: 443 # Порт внешнего сервиса
+- AGENT_NAME: document-classifier
+  RESOURCES:
+    REPLICAS: 4
+  ENV:
+    LOG_LEVEL: DEBUG
+    NEW_VAR: "hello"
