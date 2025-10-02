@@ -30,7 +30,7 @@ def _detect_unique_key(items: List[Dict]) -> Optional[str]:
         if not common_keys:
             return None
     # Ищем уникальный ключ
-    typical_keys = {"name", "id", "NAME", "AGENT_NAME", "branch", "CN"}
+    typical_keys = {"name", "id", "NAME", "AGENT_NAME", "branch"}
     for key in typical_keys:
         if key in common_keys:
             return key

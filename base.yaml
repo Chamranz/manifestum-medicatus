@@ -1,42 +1,54 @@
-# Список интеграций MTLS (Открывает дырку в Egress). Optional
-MTLS:
-  - NAME: mtls-gigaspravka # Уникальное имя интеграции
-    HOST: "gigaspravka.apps.azwx5oj1.k8s.delta.sbrf.ru" # Хост внешнего сервиса
-    PORT: 443 # Порт внешнего сервиса
-  - NAME: mtls-olavatar # Уникальное имя интеграции
-    HOST: "olavatar-pg-aigw.apps.dev-gen1-dm.delta.sbrf.ru"  # Хост внешнего сервиса
-    PORT: 443 # Порт внешнего сервиса
-
-# Список интеграций MTLS по OTT (Открывает дырку в Egress). Optional
-MTLS_OTT:
-  - NAME: audit-ott # Уникальное имя интеграции
-    HOST: rest-ott-ift-uaudit.delta.sbrf.ru  # Хост внешнего сервиса
-    PORT: 443 # Порт внешнего сервиса
-
-# Список интеграций TCP (Например Kafka)(Открывает дырку в Egress). Optional
-KAFKA:
-  - NAME: tvldq-audi00001 # Уникальное имя интеграции. Required
-    HOST: tvldq-audi00001.delta.sbrf.ru # Хост. Required
-    IP: 10.18.182.121  # IP адрес. Required
-    PORT: 9093 # Порт. Required
-  - NAME: tvldq-audi00002 # Уникальное имя интеграции
-    HOST: tvldq-audi00002.delta.sbrf.ru  # Хост. Required
-    IP: 10.18.182.86 # IP адрес. Required
-    PORT: 9093  # Порт. Required
-
-# Блок с базами postgres (pangolin). Optional
-POSTGRES:
-  - NAME: postgres-sberdocs # произвольное имя required
-    HOST: tsldd-aah000001.delta.sbrf.ru # хост Required
-    IP: 10.28.171.169 # ip required
-    PORT: 6544 # Порт базы required
-    INNERPORT: 8000 # Внутренний порт для работы istio. Должен быть уникальный на namespace. Required
-
-# Блок настроек Whitelist. Required
-INGRESS_WHITELIST:
-  - NAME: autotests # Имя интеграции
-    CN: .*CN=ci08392058-ift-aef,.* # CN сертификата в формате .*CN=client-cert,.*
-    PATH: .* # RegEx пути
-  - NAME: rgs
-    CN: .*CN=00CA0005PCAPCC360RGSSRV,.*
-    PATH: /api/v1/lpr/giga-insights|/api/v1/lpr/rendered-data|/api/v1/lpr/data-legend|/api/v1/company/giga-insights|/api/v1/company/rendered-data|/api/v1/company/data-legend
+  # Уникальный идентификатор агента (должен быть передан в составе дистрибутива). Required
+- AGENT_NAME: agent-name-1
+  # Блок настройки ресурсов. Optional
+  RESOURCES:
+    # Количество реплик. Optional
+    REPLICAS: 1
+    LIMITS:
+      # Limits CPU. Optional
+      CPU: 300m
+      # Limits Memory. Optional
+      MEMORY: 500Mi
+    REQUESTS:
+      # Requests CPU. Optional
+      CPU: 300m
+      # Requests Memory. Optional
+      MEMORY: 500Mi
+  # Блок настройки Liveness и Readiness probe. Optional
+  PROBE:
+    # Параметры Readiness probe. Optional
+    READINESS:
+      # Время задержки (в секундах) перед первым выполнением. Optional
+      INITIAL_DELAY_SECONDS: 30
+      # Максимальное время ожидания ответа от приложения. Optional
+      TIMEOUT_SECONDS: 5
+      # Интервал между последовательными проверками. Optional
+      PERIOD_SECONDS: 15
+      # Количество подряд успешных проверок. Optional
+      SUCCESS_THRESHOLD: 1
+      # Количество подряд неудачных проверок. Optional
+      FAILURE_THRESHOLD: 3
+    # Параметры Liveness probe. Optional
+    LIVENESS:
+      # Время задержки (в секундах) перед первым выполнением. Optional
+      INITIAL_DELAY_SECONDS: 30
+      # Максимальное время ожидания ответа от приложения. Optional
+      TIMEOUT_SECONDS: 5
+      # Интервал между последовательными проверками. Optional
+      PERIOD_SECONDS: 60
+      # Количество подряд успешных проверок. Optional
+      SUCCESS_THRESHOLD: 1
+      # Количество подряд неудачных проверок. Optional
+      FAILURE_THRESHOLD: 3 
+  # Параметры prometheus. Optional
+  PROMETHEUS:
+    # Порт на котором выставлены метрики
+    PORT: 8080
+    # Эндпоинт на котором выставлены метрики
+    PATH: /metrics
+  # Блок с переменными окружения передаваемых агенту. Optional
+  ENV:
+    # Пример переменной окружения.
+    LOG_PATH: '/var/log/app/app.log'
+    # кэ агента (модуля)
+    AGENT_ID: CI08392058
