@@ -3,34 +3,30 @@ import sys
 import os
 import yaml
 from dotenv import load_dotenv
-from merger import deep_merge
-from reader import load_yaml
-
+from src.merger import deep_merge
+from src.reader import load_yaml
+from src.saver import save_yaml
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 load_dotenv()
 
 
-def save_yaml(data, output_name):
-    output_path = os.getenv("OUTPUT_PATH", ".")
-    os.makedirs(output_path, exist_ok=True)
-    filepath = os.path.join(output_path, f"{output_name}.yaml")
-    with open(filepath, "w", encoding="utf-8") as f:
-        yaml.dump(data, f, allow_unicode=True, default_flow_style=False, sort_keys=False)
-    print(f"✅ Сохранено: {filepath}")
 
 # ... (deep_merge и _detect_unique_key — как выше)
 
 def main():
-    if len(sys.argv) != 4:
-        print("Использование: python main.py <base.yaml> <override.yaml> <output_name>")
+    if sys.argv.__len__() < 2:
+        print("После python main.py нужно ввести название стендов/стенда: python main.py DEV IFT1 IFT2")
         sys.exit(1)
 
-    base = load_yaml(sys.argv[1])
-    override = load_yaml(sys.argv[2])
-    output_name = sys.argv[3]
-
-    result = deep_merge(base, override)
-    save_yaml(result, output_name)
+    base_manifests = [load_yaml("base_manifests/agents.yaml")[0], load_yaml("base_manifests/common.yaml"),
+                      load_yaml("base_manifests/integration.yaml"), load_yaml("base_manifests/namespace.yaml"),]
+    current_manifests = [(load_yaml("current_manifests/agents.yaml"))[0], load_yaml("current_manifests/common.yaml"),
+                     load_yaml("current_manifests/integration.yaml"), load_yaml("current_manifests/namespace.yaml"), ]
+    stand_names = [sys.argv[i] for i in range(1, sys.argv.__len__())]
+    merged_manifests = [deep_merge(b, o) for b, o in zip(base_manifests, current_manifests)]
+    save_yaml(merged_manifests, stand_names)
 
 if __name__ == "__main__":
     main()
