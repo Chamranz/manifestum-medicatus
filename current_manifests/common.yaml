@@ -1,0 +1,45 @@
+hub:
+  # Имя хаба
+  name: "AI-HUB БТ"
+  # КЭ хаба (АС)
+  id: CI08967393
+
+aef:
+  # Имя фп аеф
+  name: "AI-HUB БТ.AEF Container ДРПА КВ Alpha"
+  # КЭ фп аеф
+  id: CI09708620
+  # id модуля (КЭ агента)
+  module_id: CI10071809
+
+agents:
+    # Имя агента
+  - name: "document-classifier"
+    # Ссылка на код
+    git: ssh://git@stash.sigma.sbrf.ru:7999/kvaef/document-classifier.git
+    # Путь к requirements txt
+    path: ./agents/document_classifier/v0.1
+    # Ссылка на базовый образ
+    baseImage: docker-internal.registry-ci.delta.sbrf.ru/ci04675739/ci04675739/python3.11:8.9.1
+
+# Блок для Quality Gates
+qg:
+  # Код команды
+  mus_code: "00200044"
+  # Имя команды
+  mus_name: "Models"
+  mus_po_mail: "Loshak.D.I@sberbank.ru"
+  # КЭ агента
+  sm_id: "CI09708620"
+  # Имя агента
+  sm_name: "AI-HUB БТ.AEF Container ДРПА КВ Alpha"
+  jira_area: "AAA"
+
+# Подробнее о секретах в пререквизитах
+buildCredentials:
+  # Секрет с SSH ключами туза, который будет ходить в гит за исходным кодом
+  GIT_SSH_CREDENTIAL_ID: 'GIT_CONFIGS_CRED'
+  # Секрет с ТУЗом в формате tuz@delta.sbrf.ru + паролем от AD движка SecMan
+  PASS_CREDENTIAL_ID: 'cab-sa-dvo09991_AD_DOMAIN'
+  # Секрет с OSC токеном для PyPi
+  OSC_TOKEN_CREDENTIAL_ID: 'cab-sa-dvo09991_OSC_TOKEN'

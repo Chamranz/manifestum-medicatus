@@ -1,0 +1,53 @@
+- AGENT_NAME: agent-name-1
+  # Блок настройки ресурсов. Optional
+  RESOURCES:
+    # Количество реплик. Optional
+    REPLICAS: 1
+    LIMITS:
+      # Limits CPU. Optional
+      CPU: 300m
+      # Limits Memory. Optional
+      MEMORY: 500Mi
+    REQUESTS:
+      # Requests CPU. Optional
+      CPU: 300m
+      # Requests Memory. Optional
+      MEMORY: 500Mi
+  # Блок настройки Liveness и Readiness probe. Optional
+  PROBE:
+    # Параметры Readiness probe. Optional
+    READINESS:
+      # Время задержки (в секундах) перед первым выполнением. Optional
+      INITIAL_DELAY_SECONDS: 30
+      # Максимальное время ожидания ответа от приложения. Optional
+      TIMEOUT_SECONDS: 5
+      # Интервал между последовательными проверками. Optional
+      PERIOD_SECONDS: 15
+      # Количество подряд успешных проверок. Optional
+      SUCCESS_THRESHOLD: 1
+      # Количество подряд неудачных проверок. Optional
+      FAILURE_THRESHOLD: 3
+    # Параметры Liveness probe. Optional
+    LIVENESS:
+      # Время задержки (в секундах) перед первым выполнением. Optional
+      INITIAL_DELAY_SECONDS: 30
+      # Максимальное время ожидания ответа от приложения. Optional
+      TIMEOUT_SECONDS: 5
+      # Интервал между последовательными проверками. Optional
+      PERIOD_SECONDS: 60
+      # Количество подряд успешных проверок. Optional
+      SUCCESS_THRESHOLD: 1
+      # Количество подряд неудачных проверок. Optional
+      FAILURE_THRESHOLD: 3
+  # Параметры prometheus. Optional
+  PROMETHEUS:
+    # Порт на котором выставлены метрики
+    PORT: 8080
+    # Эндпоинт на котором выставлены метрики
+    PATH: /metrics
+  # Блок с переменными окружения передаваемых агенту. Optional
+  ENV:
+    # Пример переменной окружения.
+    LOG_PATH: '/var/log/app/app.log'
+    # кэ агента (модуля)
+    AGENT_ID: CI08392058

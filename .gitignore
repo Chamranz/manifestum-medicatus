@@ -1,1 +1,4 @@
-*.yaml
+/merged_manifests/agents/*
+/merged_manifests/common/*
+/merged_manifests/integrations/*
+/merged_manifests/namespace/*
