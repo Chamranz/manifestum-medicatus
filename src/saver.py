@@ -4,7 +4,7 @@ def dump_yaml(data, output_name):
     filepath = os.path.join(f"{output_name}.yaml")
     with open(filepath, "w", encoding="utf-8") as f:
         yaml.dump(data, f, allow_unicode=True, default_flow_style=False, sort_keys=False)
-    print(f"✅ Сохранено: {filepath}")
+    print(f"Сохранено: {filepath}")
 
 def save_yaml(merged_manifests, stand_names):
     for stand in stand_names:
