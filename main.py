@@ -6,7 +6,7 @@ from src.merger import deep_merge
 from src.reader import load_yaml
 from src.saver import save_yaml
 from src.cleaner import remove_empty_lists, strip_optional_from_base, remove_optional_fields
-from src.cleaner import OPTIONAL_SECTIONS, OPTIONAL_SCHEMA_PATH
+from src.cleaner import OPTIONAL_SECTIONS
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
@@ -31,9 +31,9 @@ def main():
     if args.type == "update":
         cleaned_base = []
         for base, name in zip(base_manifests, MANIFEST_NAMES):
-            # 1. Удаляем корневые опциональные секции (MTLS_OTT, KAFKA и т.д.)
+            # Удаляем корневые опциональные секции (MTLS_OTT, KAFKA и т.д.)
             base_no_root_opt = strip_optional_from_base(base, OPTIONAL_SECTIONS)
-            # 2. Удаляем опциональные поля внутри блоков (например, в SECMAN)
+            #Удаляем опциональные поля внутри блоков (например, в SECMAN)
             base_final = remove_optional_fields(base_no_root_opt, name)
             cleaned_base.append(base_final)
         base_manifests = cleaned_base
