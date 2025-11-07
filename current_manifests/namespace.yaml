@@ -6,7 +6,9 @@ PASS_CREDENTIAL_ID: 'cab-sa-dvo09991_AD_DOMAIN'
 DROPAPP_CLUSTER: 'a3q0odr0.k8s.delta.sbrf.ru'
 DROPAPP_CREDENTIAL_ID: 'a3q0odr0_k8s_delta_sbrf_ru_dropapp'
 # namespace
-DROPAPP_NAMESPACE: 'ci09708620-document-classifier'
+DROPAPP_NAMESPACE: 'ci09708620-strategy-selection'
+# Ingress/Egress namespace
+EIGW_NAMESPACE: 'ci09708620-strategy-selection'
 # КЭ стенда
 STAND_ID: 'CI09888999'
 # тип стенда IFT / PSI / PROM
@@ -22,7 +24,7 @@ SECMAN:
   # ссылка на SecMan
   HOST: "t.secrets.delta.sbrf.ru"
   # имя namespace dropapp
-  ROLE_NAME: "ci09708620-document-classifier"
+  ROLE_NAME: "ci09708620-strategy-selection"
   # namespace secman
   NAMESPACE: "CI08967393_CI09888999"
   # путь до truststore ott
@@ -34,22 +36,33 @@ SECMAN:
   # путь до секретных переменных окружения. Имена секретов внутри должно совпадать с именами в SECRET_ENV в agent.yaml
 #  ENV_KV_PATH: "CI06064378_CI08423996/A/AEF/OSH/AEF/KV/SECRET_ENV"
   # CN сертификата, по умолчанию вида КЭФП-СТЕНД-КЭМодуля-ИмяАгента
-#  SBER_CA_CN: "CI09888999-DEV-document-classifier"
-  SBER_CA_CN: "CI09708620-DEV-CI10071809-document-classifier"
+  SBER_CA_CLIENT_CN: "CI09708620-DEV-CI10663014-strategy-selection"
+  # серверный CN = равен 1му SAN
+  SBER_CA_SERVER_CN: >-
+    strategy-selection.ci09708620-strategy-selection.apps.a3q0odr0.k8s.delta.sbrf.ru
   # CN сертификата OTT, должен совпадать с OTT.BILLING_ACCOUNT
 #  SBER_CA_OTT_CN: "CI08392058-CI08392058-OTTYUL"
   # путь до движка с SECMAN
 #  SBER_CA_KV_OTT_CLIENT_PATH: "CI06064378_CI08423996/A/AEF/OSH/AEF/SBERCA/sberca-test1-ext-ec/fetch/client_1y_APPLAYER_ec"
   # Путь до файлов с секретами в secman
 #  SECRETS_KV_PATH: "CI06064378_CI08423996/A/AEF/OSH/AEF/KV/SECRET_FILES"
-  # Необходимо для интеграция между внешним и внутренним сегментом сети через SOWA. Optional
-  SBER_CA_SAN: document-classifier.ci09708620-document-classifier.apps.a3q0odr0.k8s.delta.sbrf.ru
+  #  Optional # используется для geo. Присмер заполнения:
+  #INGRESS_GW_SAN: >-
+  # patterns-agent.dev4.apps.azwx5oj1.k8s.delta.sbrf.ru,patterns-agent-ott.dev4.apps.azwx5oj1.k8s.delta.sbrf.ru
+  INGRESS_GW_SAN: >-
+    strategy-selection.ci09708620-strategy-selection.apps.a3q0odr0.k8s.delta.sbrf.ru
   # Наименование файлов с секретами. Секреты будут размещены в поде по пути /vault/secrets/secret-files. Формат файлов
   # свободный. (должно совпадать с ключами секретов расположенными по пути указанному в SECRETS_KV_PATH.
   # Если название не совпадёт, будет создан пустой файл)
-#  SECRET_FILES:
-#    - secret1
-#    - secret2
+  #Optional
+  # путь до egress_custom_ca_cert.pem
+  #EGRESS_CUSTOM_CA_KV_PATH: "CI06064378_CI08423996/A/AEF/OSH/AEF/KV/certs"
+  #Optional
+  # путь до ingress_custom_ca_cert.pem
+  #INGRESS_CUSTOM_CA_KV_PATH: "CI06064378_CI08423996/A/AEF/OSH/AEF/KV/certs"
+  #SECRET_FILES:
+  #  - secret1
+  #  - secret2
 # Блок настроек Fluentbit. Optional
 FLUENT_BIT:
   # Блок настроек ресурсов. Optional

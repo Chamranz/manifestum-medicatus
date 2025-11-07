@@ -1,25 +1,27 @@
+## Список интеграций MTLS (Открывает дырку в Egress). Optional
 MTLS:
 #  - NAME: mtls-gigaspravka # Уникальное имя интеграции
 #    HOST: "gigaspravka.apps.azwx5oj1.k8s.delta.sbrf.ru" # Хост внешнего сервиса
 #    PORT: 443 # Порт внешнего сервиса
+#    INNERPORT: 8082 # Внутренний порт, должен отличаться от внешнего и виртуального 2000
 #  - NAME: mtls-olavatar # Уникальное имя интеграции
 #    HOST: "olavatar-pg-aigw.apps.dev-gen1-dm.delta.sbrf.ru"  # Хост внешнего сервиса
 #    PORT: 443 # Порт внешнего сервиса
+#    INNERPORT: 8082 # Внутренний порт, должен отличаться от внешнего и виртуального 2000
   - NAME: mtls-gigachat # Уникальное имя интеграции
     HOST: "gigachat-ift.sberdevices.delta.sbrf.ru" # Хост внешнего сервиса
     PORT: 443 # Порт внешнего сервиса
+#    INNERPORT: 8082 # Внутренний порт, должен отличаться от внешнего и виртуального 2000
 #  - NAME: mtls-uvz-ecm # Уникальное имя интеграции
 #    HOST: "tslds-uvz000011.delta.sbrf.ru" # Хост внешнего сервиса
 #    PORT: 9093 # Порт внешнего сервиса
+#    INNERPORT: 8082 # Внутренний порт, должен отличаться от внешнего и виртуального 2000
   - NAME: mtls-uvz-external-api # Уникальное имя интеграции
     HOST: "uvz-external-api.delta.sbrf.ru" # Хост внешнего сервиса
     PORT: 8443 # Порт внешнего сервиса
+#    INNERPORT: 8082 # Внутренний порт, должен отличаться от внешнего и виртуального 2000
 #
 ## Список интеграций MTLS по OTT (Открывает дырку в Egress). Optional
-#MTLS_OTT:
-#  - NAME: audit-ott # Уникальное имя интеграции
-#    HOST: rest-ott-ift-uaudit.delta.sbrf.ru  # Хост внешнего сервиса
-#    PORT: 443 # Порт внешнего сервиса
 #
 # Список интеграций TCP (Например Kafka)(Открывает дырку в Egress). Optional
 KAFKA:

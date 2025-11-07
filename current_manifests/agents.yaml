@@ -1,18 +1,19 @@
-- AGENT_NAME: document-classifier
+  # Уникальный идентификатор агента (должен быть передан в составе дистрибутива). Required
+- AGENT_NAME: strategy-selection
   # Блок настройки ресурсов. Optional
   RESOURCES:
     # Количество реплик. Optional
     REPLICAS: 2
     LIMITS:
       # Limits CPU. Optional
-      CPU: 500m
+      CPU: 350m
       # Limits Memory. Optional
-      MEMORY: 1024Mi
+      MEMORY: 512Mi
     REQUESTS:
       # Requests CPU. Optional
-      CPU: 250m
+      CPU: 150m
       # Requests Memory. Optional
-      MEMORY: 512Mi
+      MEMORY: 256Mi
   # Блок настройки Liveness и Readiness probe. Optional
   PROBE:
     # Параметры Readiness probe. Optional
@@ -44,8 +45,9 @@
     # Пример переменной окружения.
     LOG_FILE: '/var/log/app/app.log'
     LOG_LEVEL: 'DEBUG'
+    AGENT_METRICS_LOG_FILE: '/var/log/app/app.log'
     # кэ агента (модуля)
-    AGENT_ID: 'CI10071809'
+    AGENT_ID: 'CI10663014'
 
     GIGACHAT_BASE_URL: 'http://gigachat-ift.sberdevices.delta.sbrf.ru:8080/v1'
     GIGACHAT_TIMEOUT: '60'
@@ -53,85 +55,19 @@
     GIGACHAT_RETRY_INCREMENT: '15'
 
 
-    DOCUMENT_READER_BASE_URL: 'http://uvz-external-api.delta.sbrf.ru:8080/document-reader/'
-    #DOCUMENT_READER_CERT_FILE=
-    #DOCUMENT_READER_KEY_FILE=
-    DOCUMENT_READER_TIMEOUT: '120'
-    DOCUMENT_READER_RETRY_LIMIT: '3'
-    DOCUMENT_READER_RETRY_INCREMENT: '30'
+    AI_AGENT_DATA_BASE_URL: 'http://uvz-external-api.delta.sbrf.ru:8080/ai-agent/'
+    #AI_AGENT_DATA_CERT_FILE=
+    #AI_AGENT_DATA_KEY_FILE=
+    AI_AGENT_DATA_TIMEOUT: '60'
+    AI_AGENT_DATA_RETRY_LIMIT: '3'
+    AI_AGENT_DATA_RETRY_INCREMENT: '15'
 
 
     LIVENESS_PROBE_PATH: '/health/liveness'
     READINESS_PROBE_PATH: '/health/readiness'
 
-    NLTK_DATA: '/app/resources/nltk_data'
-    MYSTEM_BIN: '/app/resources/mystem/mystem'
 
-- AGENT_NAME: hallo_migos
-  # Блок настройки ресурсов. Optional
-  RESOURCES:
-    # Количество реплик. Optional
-    REPLICAS: 2
-    LIMITS:
-      # Limits CPU. Optional
-      CPU: 500m
-      # Limits Memory. Optional
-      MEMORY: 1024Mi
-    REQUESTS:
-      # Requests CPU. Optional
-      CPU: 250m
-      # Requests Memory. Optional
-      MEMORY: 512Mi
-  # Блок настройки Liveness и Readiness probe. Optional
-  PROBE:
-    # Параметры Readiness probe. Optional
-    READINESS:
-      # Время задержки (в секундах) перед первым выполнением. Optional
-      INITIAL_DELAY_SECONDS: 30
-      # Максимальное время ожидания ответа от приложения. Optional
-      TIMEOUT_SECONDS: 5
-      # Интервал между последовательными проверками. Optional
-      PERIOD_SECONDS: 15
-      # Количество подряд успешных проверок. Optional
-      SUCCESS_THRESHOLD: 1
-      # Количество подряд неудачных проверок. Optional
-      FAILURE_THRESHOLD: 3
-    # Параметры Liveness probe. Optional
-    LIVENESS:
-      # Время задержки (в секундах) перед первым выполнением. Optional
-      INITIAL_DELAY_SECONDS: 30
-      # Максимальное время ожидания ответа от приложения. Optional
-      TIMEOUT_SECONDS: 5
-      # Интервал между последовательными проверками. Optional
-      PERIOD_SECONDS: 60
-      # Количество подряд успешных проверок. Optional
-      SUCCESS_THRESHOLD: 1
-      # Количество подряд неудачных проверок. Optional
-      FAILURE_THRESHOLD: 3
-  # Блок с переменными окружения передаваемых агенту. Optional
-  ENV:
-    # Пример переменной окружения.
-    LOG_FILE: '/var/log/app/app.log'
-    LOG_LEVEL: 'DEBUG'
-    # кэ агента (модуля)
-    AGENT_ID: 'CI10071809'
-
-    GIGACHAT_BASE_URL: 'http://gigachat-ift.sberdevices.delta.sbrf.ru:8080/v1'
-    GIGACHAT_TIMEOUT: '60'
-    GIGACHAT_RETRY_LIMIT: '3'
-    GIGACHAT_RETRY_INCREMENT: '15'
-
-
-    DOCUMENT_READER_BASE_URL: 'http://uvz-external-api.delta.sbrf.ru:8080/document-reader/'
-    #DOCUMENT_READER_CERT_FILE=
-    #DOCUMENT_READER_KEY_FILE=
-    DOCUMENT_READER_TIMEOUT: '120'
-    DOCUMENT_READER_RETRY_LIMIT: '3'
-    DOCUMENT_READER_RETRY_INCREMENT: '30'
-
-
-    LIVENESS_PROBE_PATH: '/health/liveness'
-    READINESS_PROBE_PATH: '/health/readiness'
-
-    NLTK_DATA: '/app/resources/nltk_data'
-    MYSTEM_BIN: '/app/resources/mystem/mystem'
+#  # Список секретов SECMAN
+#  SECRET_ENV:
+#    - DB_USER
+#    - DB_PASSWORD

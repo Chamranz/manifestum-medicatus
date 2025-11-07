@@ -48,8 +48,8 @@ SECMAN:
   #  Optional # используется для geo. Присмер заполнения:
   #INGRESS_GW_SAN: >-
   # patterns-agent.dev4.apps.azwx5oj1.k8s.delta.sbrf.ru,patterns-agent-ott.dev4.apps.azwx5oj1.k8s.delta.sbrf.ru
-  INGRESS_GW_SAN: >-
-    patterns-agent.dev4.apps.azwx5oj1.k8s.delta.sbrf.ru,patterns-agent-ott.dev4.apps.azwx5oj1.k8s.delta.sbrf.ru
+#  INGRESS_GW_SAN: >-
+#    patterns-agent.dev4.apps.azwx5oj1.k8s.delta.sbrf.ru,patterns-agent-ott.dev4.apps.azwx5oj1.k8s.delta.sbrf.ru
   # Наименование файлов с секретами. Секреты будут размещены в поде по пути /vault/secrets/secret-files. Формат файлов
   # свободный. (должно совпадать с ключами секретов расположенными по пути указанному в SECRETS_KV_PATH.
   # Если название не совпадёт, будет создан пустой файл)
@@ -194,7 +194,7 @@ HASHICORP:
 # Optional. Блок тонкой настройки сервиса guardRails. Применяется в сочетании с галочкой в jenkins installGR
 GR:
   ENV: # Блок ENV обязателен есть в jenkins installGR == true
-    LOG_PATH: /var/log/app/app.log
+    #LOG_PATH: /var/log/app/app.log
     GIGA_BASE_URL: 'http://gigachat-ift.sberdevices.delta.sbrf.ru:8080/v1'
     AGENT_NAME: guardians_service
     RAG_BASE_URL: 'http://sm.apps.dev-terra000003-ids.ocp.delta.sbrf.ru:8080'

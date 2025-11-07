@@ -12,3 +12,4 @@ def save_yaml(merged_manifests, stand_names):
         dump_yaml(merged_manifests[1], f"merged_manifests/common/{stand}")
         dump_yaml(merged_manifests[2], f"merged_manifests/integrations/{stand}")
         dump_yaml(merged_manifests[3], f"merged_manifests/namespace/{stand}")
+

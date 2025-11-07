@@ -10,15 +10,15 @@ aef:
   # КЭ фп аеф
   id: CI09708620
   # id модуля (КЭ агента)
-  module_id: CI10071809
+  module_id: CI10663014
 
 agents:
     # Имя агента
-  - name: "document-classifier"
+  - name: "strategy-selection"
     # Ссылка на код
-    git: ssh://git@stash.sigma.sbrf.ru:7999/kvaef/document-classifier.git
+    git: ssh://git@stash.sigma.sbrf.ru:7999/kvaef/strategy-selection.git
     # Путь к requirements txt
-    path: ./agents/document_classifier/v0.1
+    path: ./agents/strategy_selection/v0.1
     # Ссылка на базовый образ
     baseImage: docker-internal.registry-ci.delta.sbrf.ru/ci04675739/ci04675739/python3.11:8.9.1
 

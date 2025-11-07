@@ -1,0 +1,33 @@
+agents: {}
+
+common: {}
+
+integration:
+  MTLS_OTT: []
+  KAFKA: []
+  POSTGRES: []
+  GRPC: []
+
+namespace:
+  __root_optional_fields__:
+    - K8S_TYPE
+    - SSM_CP
+
+  FLUENT_BIT: []
+  OTT: []
+  ISTIO: []
+  REFLEX: []
+  INJECTEDISTIO: []
+  HASHICORP: []
+  GR: []
+
+  SECMAN:
+    - CERT_KV_PATH
+    - ENV_KV_PATH
+    - SBER_CA_OTT_CN
+    - SECRETS_KV_PATH
+    - INGRESS_GW_SAN
+    - EGRESS_CUSTOM_CA_KV_PATH
+    - INGRESS_CUSTOM_CA_KV_PATH
+    - SECRET_FILES
+    - SBER_CA_KV_OTT_CLIENT_PATH

@@ -22,7 +22,7 @@ agents:
     # Путь к requirements txt
     path: ./services/agents-metrics-service
     # Имя папки с приложением Java. Optional.
-    javaSrc: src
+#    javaSrc: src
     # Ссылка на базовый образ
     baseImage: docker-internal.registry-ci.delta.sbrf.ru/ci04675739/ci04675739/maven-3.9.6-openjdk17:8.10.0-se@sha256:8ea2b0f7ddbd942b53fe5eb090151919107bd7310fd3b23d70b3a1a3a8dc87bd
     # (Только для java)
