@@ -3,36 +3,40 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def deep_merge(base: Any, override: Any) -> Any:
-    """Рекурсивно объединяем два словаря. override перетирает base.
+def deep_merge(base: Any, override: Any, merge_lists: bool = False) -> Any:
+    """
+    Рекурсивно объединяет два объекта.
+    
+    - Если оба словари, то мерджим рекурсивно.
+    - Если оба списки и `merge_lists=True` → конкатенируем.
+    - Иначе override полностью заменяет base.
+    
+    Args:
+        base: базовое значение
+        override: переопределяющее значение
+        merge_lists: если True и оба значения — списки, то объединить их; иначе override заменяет base.
 
-    Если оба аргумента — словари, происходит рекурсивное слияние. Если список - то просто вставляется значение из override
-    Значения из override имеют приоритет.
-
-        Args:
-            base (Any):
-                Базовый ямлик
-            override (Any):
-                Текущий ямлик
-
-        Returns:
-            dict: Итоговый ямлик."""
+    Returns:
+        Итоговое значение.
+    """
     if isinstance(base, dict) and isinstance(override, dict):
         result = base.copy()
 
         for key in base:
             if key not in override:
-                logger.debug("Сохранено из базового конфига (отсутствует в override): %s = %r", key, base[key])
+                #logger.debug("Сохранено из базового конфига (отсутствует в override): %s = %r", key, base[key])
+                pass
 
         for key, value in override.items():
             if key in result:
-                result[key] = deep_merge(result[key], value)
+                result[key] = deep_merge(result[key], value, merge_lists=merge_lists)
             else:
-                #print(value)
                 result[key] = value
         return result
 
+    elif merge_lists and isinstance(base, list) and isinstance(override, list):
+        return base + override
+
     else:
-        #print(override)
         return override
 

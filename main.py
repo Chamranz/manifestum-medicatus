@@ -1,47 +1,80 @@
-# main.py
 import sys
-import argparse
+import importlib.util
+import os
 from dotenv import load_dotenv
 from src.merger import deep_merge
 from src.reader import load_yaml
 from src.saver import save_yaml
-from src.cleaner import remove_empty_lists, strip_optional_from_base, remove_optional_fields
-from src.cleaner import OPTIONAL_SECTIONS
+from src.cleaner import remove_empty_lists
 import logging
-logging.basicConfig(level=logging.DEBUG)
 
+logging.basicConfig(level=logging.DEBUG)
 load_dotenv()
 
+MANIFEST_NAMES = ["agents", "integrations", "namespace"]
+STANDS = ["DEV", "IFT1", "IFT2", "PROM1", "PROM2", "PSI1", "PSI2"]
 
-MANIFEST_NAMES = ["agents", "common", "integration", "namespace"]
+LAYER = {
+    "DEV": ["general", "PREPROM", "DEV"],
+    "IFT1": ["general", "PREPROM", "IFT", "IFT1"],
+    "IFT2": ["general", "PREPROM", "IFT", "IFT2"],
+    "PROM1": ["general", "PROM", "PROM1"],
+    "PROM2": ["general", "PROM", "PROM2"],
+    "PSI1": ["general", "PSI", "PSI1"],
+    "PSI2": ["general", "PSI", "PSI2"],
+}
+
+
+def load_by_params(manifest_type: str, layer: str):
+    var_name = f"{layer.lower()}_params"
+    if layer == "general":
+        file_path = f"manifests_diff/{manifest_type}/{layer.lower()}.py"
+    else:
+        file_path = f"manifests_diff/{manifest_type}/{layer}/{layer.lower()}.py"
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"File {file_path} not found")
+
+    spec = importlib.util.spec_from_file_location("mod", file_path)
+    module =importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    print("ok")
+
+    if not hasattr(module, var_name):
+        raise AttributeError(f"Module {file_path} has no attribute {var_name}")
+    return getattr(module, var_name)
+
+
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-st", "--stand", nargs='+', required=True)
-    parser.add_argument("-tp", "--type", choices=["update", "reconf"], default="reconf")
-    args = parser.parse_args()
 
-    base_manifests = [
-        load_yaml(f"base_manifests/{name}.yaml") for name in MANIFEST_NAMES
-    ]
-    current_manifests = [
-        load_yaml(f"current_manifests/{name}.yaml") for name in MANIFEST_NAMES
-    ]
+    for manifest_name in MANIFEST_NAMES:
+        base = load_yaml(f"base_manifests/{manifest_name}.yaml")
 
-    if args.type == "update":
-        cleaned_base = []
-        for base, name in zip(base_manifests, MANIFEST_NAMES):
-            # Удаляем корневые опциональные секции (MTLS_OTT, KAFKA и т.д.)
-            base_no_root_opt = strip_optional_from_base(base, OPTIONAL_SECTIONS)
-            #Удаляем опциональные поля внутри блоков (например, в SECMAN)
-            base_final = remove_optional_fields(base_no_root_opt, name)
-            cleaned_base.append(base_final)
-        base_manifests = cleaned_base
+        for stand in STANDS:
+            if stand not in LAYER:
+                logging.warning(f"Stand {stand} is not defined")
+                continue
 
-    merged_manifests = [deep_merge(b, c) for b, c in zip(base_manifests, current_manifests)]
-    cleaned_manifests = [remove_empty_lists(m) for m in merged_manifests]
+            current = base.copy()
 
-    save_yaml(cleaned_manifests, args.stand)
+            for layer in LAYER[stand]:
+                try:
+                    layer_params = load_by_params(manifest_name, layer)
+                    current = deep_merge(current, layer_params, merge_lists=True)
+                except (FileNotFoundError, AttributeError) as e:
+                    logging.warning(f"Could not load layer {layer}: {e}")
+                    sys.exit(1)
+
+            current = remove_empty_lists(current)
+
+            output_path = f"merged_manifests/{manifest_name}/{stand}.yaml"
+            os.makedirs(os.path.dirname(output_path), exist_ok=True)
+            with open(output_path, "w", encoding="utf-8") as f:
+                import yaml
+                yaml.dump(current, f, allow_unicode=True, default_flow_style=False, sort_keys=False)
+            logging.info(f"Сохранено: {output_path}")
+
+
 
 if __name__ == "__main__":
     main()
