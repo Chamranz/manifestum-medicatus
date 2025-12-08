@@ -1,4 +1,5 @@
-from models.common import CommonConfig, Hub, Aef, AgentsBuild, QualityGates, BuildCredentials
+from models.common import CommonConfig, Hub, Aef, AgentsBuild, QualityGates, BuildCredentials, SonarQube
+
 
 def get_config():
     hub = Hub(
@@ -16,7 +17,16 @@ def get_config():
         name="strategy-selection",
         git="ssh://git@stash.sigma.sbrf.ru:7999/kvaef/strategy-selection.git",
         path="./agents/strategy_selection/v0.1",
-        baseImage="docker-internal.registry-ci.delta.sbrf.ru/ci04675739/ci04675739/python-3.11:9.6.2-se"
+        baseImage="docker-internal.registry-ci.delta.sbrf.ru/ci04675739/ci04675739/python-3.11:9.6.2-se",
+        compile=False,
+        # (опционально) Ключ проекта sonar к которому привязывается агент
+        sonar_key="strategy-selection",
+        type="python",
+    )
+
+    sonarqube = SonarQube(
+        jenkins_cred='sonar-token',
+        installation_name='SonarQubeSigma',
     )
 
     qg = QualityGates(
@@ -42,7 +52,10 @@ def get_config():
     common = CommonConfig(
         hub=hub,
         aef=aef,
+        sonar_qube=sonarqube,
         agents=[agents],
         qg=qg,
         buildCredentials=buildCredentials
     )
+
+    return common.model_dump(exclude_unset=True)

@@ -80,7 +80,14 @@ def main():
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
             with open(output_path, "w", encoding="utf-8") as f:
                 import yaml
-                yaml.dump(final_obj, f, default_flow_style=False, allow_unicode=True, sort_keys=False)
+                data_dict = final_obj.model_dump()
+                yaml.dump(
+                    data_dict,
+                    f,
+                    allow_unicode=True,  # поддержка кириллицы и спецсимволов
+                    default_flow_style=False,  # читаемый многострочный формат
+                    sort_keys=False  # сохраняет порядок полей (рекомендуется)
+                )
 
 
 

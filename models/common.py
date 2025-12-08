@@ -15,7 +15,17 @@ class AgentsBuild(BaseModel):
     git: str = "Укажи меня"
     path: str = "Укажи меня"
     baseImage: str = "Укажи меня"
-    compile: Optional[bool] = None
+    compile: bool = False
+    sonar_key: str = "Укажи меня",
+    type: str = "pyhon",
+
+
+class SonarQube(BaseModel):
+    # Наименование jenkins credentials в котором содержится токен для авторизации
+    jenkins_cred: str = 'sonar-token'
+    # Сегмент SonarQube
+    installation_name: str = 'SonarQubeSigma'
+
 
 class QualityGates(BaseModel):
     mus_code: str = "Укажи меня"
@@ -35,6 +45,7 @@ class BuildCredentials(BaseModel):
 class CommonConfig(BaseModel):
     hub: Hub = "Укажи меня"
     aef: Aef = "Укажи меня"
+    sonar_qube: SonarQube = "Укажи меня"
     agents: List[AgentsBuild] = "Укажи меня"
     qg: QualityGates = "Укажи меня"
     buildCredentials: BuildCredentials = "Укажи меня"

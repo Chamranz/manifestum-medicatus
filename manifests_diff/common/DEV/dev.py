@@ -1,6 +1,6 @@
-from models.agents import AgentConfig
+from models.common import CommonConfig
 
 def get_config():
-    agent = AgentConfig()
+    common = CommonConfig()
 
-    return agent.model_dump(exclude_unset=True)
+    return common.model_dump(exclude_unset=True)

@@ -1,5 +1,6 @@
 from pydantic import BaseModel
-from typing import Dict, Optional
+from typing import Dict, Optional, Union
+
 
 class CpuMemory(BaseModel):
     CPU: str = "Укажи меня"
@@ -37,4 +38,4 @@ class AgentConfig(BaseModel):
     AGENT_NAME: str = "Укажи меня братка"
     RESOURCES: Resources = "Укажи меня братка"
     PROBE: Probe = "Укажи меня братка"
-    ENV: Dict[str, str] = "Укажи меня"
+    ENV: Dict[str, Union[str,int]] = "Укажи меня"
