@@ -1,3 +1,5 @@
+# Определяем список Агентов
+
   # Уникальный идентификатор агента (должен быть передан в составе дистрибутива). Required
 - AGENT_NAME: strategy-selection
   # Блок настройки ресурсов. Optional
@@ -49,13 +51,13 @@
     # кэ агента (модуля)
     AGENT_ID: 'CI10663014'
 
-    GIGACHAT_BASE_URL: 'http://gigachat-ift.sberdevices.delta.sbrf.ru:8080/v1'
+    GIGACHAT_BASE_URL: 'http://gigachat-psi.sberdevices.ca.sbrf.ru:8080/v1'
     GIGACHAT_TIMEOUT: '60'
     GIGACHAT_RETRY_LIMIT: '3'
     GIGACHAT_RETRY_INCREMENT: '15'
 
 
-    AI_AGENT_DATA_BASE_URL: 'http://uvz-external-api.delta.sbrf.ru:8080/ai-agent/'
+    AI_AGENT_DATA_BASE_URL: 'http://uvz-external-api-psi.omega.sbrf.ru:8080/ai-agent/'
     #AI_AGENT_DATA_CERT_FILE=
     #AI_AGENT_DATA_KEY_FILE=
     AI_AGENT_DATA_TIMEOUT: '60'

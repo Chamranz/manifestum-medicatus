@@ -2,16 +2,21 @@ import sys
 import importlib.util
 import os
 from dotenv import load_dotenv
+from src.validator import validate
+from models.agents import AgentConfig
 from src.merger import deep_merge
 from src.reader import load_yaml
 from src.saver import save_yaml
 from src.cleaner import remove_empty_lists
 import logging
 
+from manifests_diff import agents
+from manifests_diff.agents.PSI import psi
+from models.stub import StubConfig
 logging.basicConfig(level=logging.DEBUG)
 load_dotenv()
 
-MANIFEST_NAMES = ["agents", "integrations", "namespace"]
+MANIFEST_NAMES = ["agents", "common", "integrations", "namespace"]
 STANDS = ["DEV", "IFT1", "IFT2", "PROM1", "PROM2", "PSI1", "PSI2"]
 
 LAYER = {
@@ -25,54 +30,57 @@ LAYER = {
 }
 
 
-def load_by_params(manifest_type: str, layer: str):
-    var_name = f"{layer.lower()}_params"
+def load_partial_config(manifest_type: str, layer: str):
     if layer == "general":
-        file_path = f"manifests_diff/{manifest_type}/{layer.lower()}.py"
+        file_path = f"manifests_diff/{manifest_type}/general.py"
     else:
         file_path = f"manifests_diff/{manifest_type}/{layer}/{layer.lower()}.py"
     if not os.path.exists(file_path):
-        raise FileNotFoundError(f"File {file_path} not found")
+        raise FileNotFoundError(f"File not found: {file_path}")
 
     spec = importlib.util.spec_from_file_location("mod", file_path)
-    module =importlib.util.module_from_spec(spec)
+    module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    print("ok")
 
-    if not hasattr(module, var_name):
-        raise AttributeError(f"Module {file_path} has no attribute {var_name}")
-    return getattr(module, var_name)
+    if not hasattr(module, "get_config"):
+        raise AttributeError(f"Module {file_path} has no function 'get_config'")
+    print(f"loaded this: {module.get_config()} ")
+
+    try:
+        partial_obj = module.get_config()
+    except Exception as e:
+        partial_obj = StubConfig()
+
+    # Преобразуем в словарь для слияния
+    from dataclasses import asdict
+    return partial_obj
 
 
 
 def main():
-
     for manifest_name in MANIFEST_NAMES:
-        base = load_yaml(f"base_manifests/{manifest_name}.yaml")
-
         for stand in STANDS:
             if stand not in LAYER:
                 logging.warning(f"Stand {stand} is not defined")
                 continue
 
-            current = base.copy()
-
+            merged_dict = {}
             for layer in LAYER[stand]:
                 try:
-                    layer_params = load_by_params(manifest_name, layer)
-                    current = deep_merge(current, layer_params, merge_lists=True)
-                except (FileNotFoundError, AttributeError) as e:
-                    logging.warning(f"Could not load layer {layer}: {e}")
+                    print(f'start with layer {layer} and stand {stand}')
+                    layer_dict = load_partial_config(manifest_name, layer)
+                    merged_dict = deep_merge(merged_dict, layer_dict, merge_lists=True)
+                except Exception as e:
+                    logging.error(f"Ошибка на слое {layer} и стенде {stand}: {e}")
                     sys.exit(1)
 
-            current = remove_empty_lists(current)
+            final_obj = validate(manifest_name, merged_dict)
 
             output_path = f"merged_manifests/{manifest_name}/{stand}.yaml"
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
             with open(output_path, "w", encoding="utf-8") as f:
                 import yaml
-                yaml.dump(current, f, allow_unicode=True, default_flow_style=False, sort_keys=False)
-            logging.info(f"Сохранено: {output_path}")
+                yaml.dump(final_obj, f, default_flow_style=False, allow_unicode=True, sort_keys=False)
 
 
 

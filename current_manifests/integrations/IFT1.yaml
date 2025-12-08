@@ -1,0 +1,76 @@
+## Список интеграций MTLS (Открывает дырку в Egress). Optional
+MTLS:
+#  - NAME: mtls-gigaspravka # Уникальное имя интеграции
+#    HOST: "gigaspravka.apps.azwx5oj1.k8s.delta.sbrf.ru" # Хост внешнего сервиса
+#    PORT: 443 # Порт внешнего сервиса
+#    INNERPORT: 8082 # Внутренний порт, должен отличаться от внешнего и виртуального 2000
+#  - NAME: mtls-olavatar # Уникальное имя интеграции
+#    HOST: "olavatar-pg-aigw.apps.dev-gen1-dm.delta.sbrf.ru"  # Хост внешнего сервиса
+#    PORT: 443 # Порт внешнего сервиса
+#    INNERPORT: 8082 # Внутренний порт, должен отличаться от внешнего и виртуального 2000
+  - NAME: mtls-gigachat # Уникальное имя интеграции
+    HOST: "gigachat-ift.sberdevices.delta.sbrf.ru" # Хост внешнего сервиса
+    PORT: 443 # Порт внешнего сервиса
+#    INNERPORT: 8082 # Внутренний порт, должен отличаться от внешнего и виртуального 2000
+#  - NAME: mtls-uvz-ecm # Уникальное имя интеграции
+#    HOST: "tslds-uvz000011.delta.sbrf.ru" # Хост внешнего сервиса
+#    PORT: 9093 # Порт внешнего сервиса
+#    INNERPORT: 8082 # Внутренний порт, должен отличаться от внешнего и виртуального 2000
+  - NAME: mtls-uvz-external-api # Уникальное имя интеграции
+    HOST: "uvz-external-api.delta.sbrf.ru" # Хост внешнего сервиса
+    PORT: 8443 # Порт внешнего сервиса
+#    INNERPORT: 8082 # Внутренний порт, должен отличаться от внешнего и виртуального 2000
+#
+## Список интеграций MTLS по OTT (Открывает дырку в Egress). Optional
+#MTLS_OTT:
+#  - NAME: audit-ott # Уникальное имя интеграции
+#    HOST: rest-ott-ift-uaudit.delta.sbrf.ru  # Хост внешнего сервиса
+#    PORT: 443 # Порт внешнего сервиса
+#
+# Список интеграций TCP (Например Kafka)(Открывает дырку в Egress). Optional
+KAFKA:
+  - NAME: tvldq-btaaf0003 # Уникальное имя интеграции. Required
+    HOST: tvldq-btaaf0003.delta.sbrf.ru # Хост. Required
+    IP: 10.26.118.66  # IP адрес. Required
+    PORT: 9093 # Порт. Required
+  - NAME: tvldq-btaaf0001 # Уникальное имя интеграции
+    HOST: tvldq-btaaf0001.delta.sbrf.ru  # Хост. Required
+    IP: 10.26.118.42 # IP адрес. Required
+    PORT: 9093  # Порт. Required
+  - NAME: tvldq-btaaf0002 # Уникальное имя интеграции
+    HOST: tvldq-btaaf0002.delta.sbrf.ru  # Хост. Required
+    IP: 10.26.118.196 # IP адрес. Required
+    PORT: 9093  # Порт. Required
+  - NAME: tvldq-btaaf0005 # Уникальное имя интеграции
+    HOST: tvldq-btaaf0005.delta.sbrf.ru  # Хост. Required
+    IP: 10.26.118.89 # IP адрес. Required
+    PORT: 9093  # Порт. Required
+#
+## Блок с базами postgres (pangolin). Optional
+#POSTGRES:
+#  - NAME: postgres-sberdocs # произвольное имя required
+#    HOST: tsldd-aah000001.delta.sbrf.ru # хост Required
+#    IP: 10.28.171.169 # ip required
+#    PORT: 6544 # Порт базы required
+#    INNERPORT: 8000 # Внутренний порт для работы istio. Должен быть уникальный на namespace. Required
+#
+## Блок настроек Whitelist. Required
+INGRESS_WHITELIST:
+  - NAME: allow-all-dev # Имя интеграции
+    CN: .* # CN сертификата в формате .*CN=client-cert,.*
+    PATH: .* # RegEx пути
+#  - NAME: autotests # Имя интеграции
+#    CN: .*CN=ci08392058-ift-aef,.* # CN сертификата в формате .*CN=client-cert,.*
+#    PATH: .* # RegEx пути
+#  - NAME: rgs
+#    CN: .*CN=00CA0005PCAPCC360RGSSRV,.*
+#    PATH: /api/v1/lpr/giga-insights|/api/v1/lpr/rendered-data|/api/v1/lpr/data-legend|/api/v1/company/giga-insights|/api/v1/company/rendered-data|/api/v1/company/data-legend
+  - NAME: uvz-old
+    CN: .*CN=ci00448961-ift-ecm,.*
+    PATH: .*
+  - NAME: uvz
+    CN: .*CN=ci00448961-ift-ai-hub,.*
+    PATH: .*
+  - NAME: lboss
+    CN: .*CN=ci09708620-ift-lboss,.*
+    PATH: /health/.*

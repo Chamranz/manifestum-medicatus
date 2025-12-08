@@ -1,33 +1,8 @@
-general_params = {
-    "AGENT_NAME": "strategy-selection",
-    "RESOURCES": {
-        "REPLICAS": 2,
-        "LIMITS": {
-            "CPU": "350m",
-            "MEMORY": "512Mi"
-        },
-        "REQUESTS": {
-            "CPU": "150m",
-            "MEMORY": "256Mi"
-        }
-    },
-    "PROBE": {
-        "READINESS": {
-            "INITIAL_DELAY_SECONDS": 30,
-            "TIMEOUT_SECONDS": 5,
-            "PERIOD_SECONDS": 15,
-            "SUCCESS_THRESHOLD": 1,
-            "FAILURE_THRESHOLD": 3
-        },
-        "LIVENESS": {
-            "INITIAL_DELAY_SECONDS": 30,
-            "TIMEOUT_SECONDS": 5,
-            "PERIOD_SECONDS": 60,
-            "SUCCESS_THRESHOLD": 1,
-            "FAILURE_THRESHOLD": 3
-        }
-    },
-    "ENV": {
+from models.agents import AgentConfig, Resources, CpuMemory, ProbeConfig, Probe
+
+
+def get_config():
+    env = {
         "LOG_FILE": "/var/log/app/app.log",
         "AGENT_METRICS_LOG_FILE": "/var/log/app/app.log",
         "AGENT_ID": "CI10663014",
@@ -40,4 +15,38 @@ general_params = {
         "LIVENESS_PROBE_PATH": "/health/liveness",
         "READINESS_PROBE_PATH": "/health/readiness"
     }
-}
+
+    agents = AgentConfig(
+        AGENT_NAME="strategy-selection",
+        RESOURCES=Resources(
+            REPLICAS=2,
+            LIMITS=CpuMemory(
+                CPU="350m",
+                MEMORY="512Mi"
+            ),
+            REQUESTS=CpuMemory(
+                CPU="150m",
+                MEMORY="256Mi"
+            )
+        ),
+        PROBE=Probe(
+            READINESS=ProbeConfig(
+                INITIAL_DELAY_SECONDS=30,
+                TIMEOUT_SECONDS=5,
+                PERIOD_SECONDS=15,
+                SUCCESS_THRESHOLD=1,
+                FAILURE_THRESHOLD=3
+            ),
+            LIVENESS=ProbeConfig(
+                INITIAL_DELAY_SECONDS=30,
+                TIMEOUT_SECONDS=5,
+                PERIOD_SECONDS=60,
+                SUCCESS_THRESHOLD=1,
+                FAILURE_THRESHOLD=3
+            )
+        ),
+        ENV=env,
+    )
+
+    return agents.model_dump(exclude_unset=True)
+
