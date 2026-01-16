@@ -1,4 +1,4 @@
-from models.namespace import NamespaceConfig, SecManConfig, FluentBitConfig, IstioLogs, ResourceSpec, CpuMemoryResources
+from models.namespace import NamespaceConfig, SecManConfig
 
 
 def get_config():
@@ -10,4 +10,3 @@ def get_config():
     )
 
     return namespace.model_dump(exclude_unset=True)
-

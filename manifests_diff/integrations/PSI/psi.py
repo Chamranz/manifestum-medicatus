@@ -41,7 +41,7 @@ def get_config():
                 PORT=9093
             )
         ],
-        INGRESS_WHITE_LIST=[
+        INGRESS_WHITELIST=[
             IngressWhiteListConfig(
                 NAME="uvz-old",
                 CN=".*CN=ci00448961-psi-ecm,.*",
@@ -51,6 +51,11 @@ def get_config():
                 NAME="uvz",
                 CN=".*CN=ci00448961-psi-ai-hub,.*",
                 PATH=".*"
+            ),
+            IngressWhiteListConfig(
+                NAME="lboss",
+                CN=".*CN=ci09708620-psi-lboss,.*",
+                PATH="/health/.*"
             )
         ]
     )

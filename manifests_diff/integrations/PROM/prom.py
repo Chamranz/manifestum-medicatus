@@ -6,7 +6,7 @@ def get_config():
         MTLS=[
             MtlsConfig(
                 NAME="mtls-gigachat",
-                HOST="gigachat-prom.sberdevices.ca.sbrf.ru",
+                HOST="gigachat.sberdevices.omega.sbrf.ru",
                 PORT=443
             ),
             MtlsConfig(
@@ -18,7 +18,7 @@ def get_config():
         KAFKA=[
             KafkaConfig(
                 NAME="pvloq-btaaf0006",
-                HOST="pvloq-btaaf0006.omega.sbrf.r",
+                HOST="pvloq-btaaf0006.omega.sbrf.ru",
                 IP="10.70.73.48",
                 PORT=9093
             ),
@@ -41,7 +41,7 @@ def get_config():
                 PORT=9093
             )
         ],
-        INGRESS_WHITE_LIST=[
+        INGRESS_WHITELIST=[
             IngressWhiteListConfig(
                 NAME="uvz-old",
                 CN=".*CN=ci00448961-prom-ecm,.*",
@@ -51,6 +51,11 @@ def get_config():
                 NAME="uvz",
                 CN=".*CN=ci00448961-prom-ai-hub,.*",
                 PATH=".*"
+            ),
+            IngressWhiteListConfig(
+                NAME="lboss",
+                CN=".*CN=ci09708620-prom-lboss,.*",
+                PATH= "/health/.*"
             )
         ]
     )

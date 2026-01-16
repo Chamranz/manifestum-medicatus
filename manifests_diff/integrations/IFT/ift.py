@@ -1,8 +1,8 @@
-from models.integrations import IntegrationConfig, IngressWhiteListConfig
+from models.integrations import IntegrationConfig, IngressWhiteListConfig, KafkaConfig
 
 def get_config():
     integration = IntegrationConfig(
-        INGRESS_WHITE_LIST=[
+        INGRESS_WHITELIST=[
             IngressWhiteListConfig(
                 NAME="uvz-old",
                 CN=".*CN=ci00448961-ift-ecm,.*",
@@ -16,7 +16,7 @@ def get_config():
             IngressWhiteListConfig(
                 NAME="lboss",
                 CN=".*CN=CI09708620-IFT-LBOSS,.*",
-                PATH=".*"
+                PATH="/health/.*"
             )
         ]
     )

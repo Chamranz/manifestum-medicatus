@@ -44,15 +44,14 @@ def load_partial_config(manifest_type: str, layer: str):
 
     if not hasattr(module, "get_config"):
         raise AttributeError(f"Module {file_path} has no function 'get_config'")
-    print(f"loaded this: {module.get_config()} ")
 
     try:
         partial_obj = module.get_config()
     except Exception as e:
+        print(f"STUUUUUUB {e}")
         partial_obj = StubConfig()
 
     # Преобразуем в словарь для слияния
-    from dataclasses import asdict
     return partial_obj
 
 
@@ -64,12 +63,12 @@ def main():
                 logging.warning(f"Stand {stand} is not defined")
                 continue
 
-            merged_dict = {}
+            merged_dict = {} # Инициализация дикта с конфигами
             for layer in LAYER[stand]:
                 try:
-                    print(f'start with layer {layer} and stand {stand}')
+                    print(f'start with layer {layer} and stand {stand}, manifest {manifest_name}')
                     layer_dict = load_partial_config(manifest_name, layer)
-                    merged_dict = deep_merge(merged_dict, layer_dict, merge_lists=True)
+                    merged_dict = deep_merge(merged_dict, layer_dict, merge_lists=False)
                 except Exception as e:
                     logging.error(f"Ошибка на слое {layer} и стенде {stand}: {e}")
                     sys.exit(1)
@@ -77,18 +76,23 @@ def main():
             final_obj = validate(manifest_name, merged_dict)
 
             output_path = f"merged_manifests/{manifest_name}/{stand}.yaml"
+
+            if manifest_name == "common":
+                output_path = f"merged_manifests/{manifest_name}/COMMON.yaml"
+
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
             with open(output_path, "w", encoding="utf-8") as f:
                 import yaml
                 data_dict = final_obj.model_dump()
-                yaml.dump(
+                yaml.safe_dump(
                     data_dict,
                     f,
-                    allow_unicode=True,  # поддержка кириллицы и спецсимволов
-                    default_flow_style=False,  # читаемый многострочный формат
-                    sort_keys=False  # сохраняет порядок полей (рекомендуется)
+                    allow_unicode=True,
+                    default_flow_style=False,
+                    sort_keys=False,
+                    indent=2,  # для красивых отступов
+                    width=1000  # предотвращает разрыв длинных строк
                 )
-
 
 
 if __name__ == "__main__":

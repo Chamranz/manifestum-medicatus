@@ -34,14 +34,51 @@ class SecManConfig(BaseModel):
     INGRESS_CUSTOM_CA_KV_PATH: Optional[str] = None
     SECRET_FILES: Optional[List[str]] = None
 
+class GeoroutePatternsConfig(BaseModel):
+    HOST: str = "Укажи меня"
+    PORT: int = 2442
+
+class GeoroutesConfig(BaseModel):
+    georoute_strategy_selection: List[GeoroutePatternsConfig] = "Укажи меня"
+
+class PatternsAgentConfig(BaseModel):
+    HOST: str = "Укажи меня"
+    PORT: int = 5443
+    GEOROUTES: GeoroutesConfig = "Укажи меня"
+
+class NetworkingMtlsConfig(BaseModel):
+    strategy_selection: PatternsAgentConfig = "Укажи меня"
+
+class IngressConfig(BaseModel):
+    CONNECT_TIMEOUT: Optional[str] = None
+    READ_TIMEOUT: Optional[str] = None
+    SEND_TIMEOUT: Optional[str] = None
+    NETWORKING_MTLS: NetworkingMtlsConfig
+    NETWORKING_OTT_MTLS: Optional[NetworkingMtlsConfig] = None
+
+class IstioConfig(BaseModel):
+    INGRESS: IngressConfig = "Укажи меня"
+
 class FluentBitConfig(BaseModel):
     RESOURCES: ResourceSpec = "Укажи меня"
-    IMAGE: Optional[str] = None
+    IMAGE: Optional[str]  = None
     ISTIO_LOGS: Optional[IstioLogs] = None
+
+class OttConfig(BaseModel):
+    HOST: Optional[str] = None
+    BILLING_ACCOUNT: Optional[str] = None
+    RESOURCES: ResourceSpec = None
 
 class DynamicInventoryConfig(BaseModel):
     AUTH_TOKENS_URL: str = "Укажи меня"
     DEPLOYMENTS_URL: str = "Укажи меня"
+
+class ServiceConfigWithResources(BaseModel):
+    RESOURCES: ResourceSpec
+
+class ServiceConfig(BaseModel):
+    LIMITS: Optional[CpuMemoryResources] = None
+    REQUESTS: Optional[CpuMemoryResources] = None
 
 class NamespaceConfig(BaseModel):
     # Обязательные корневые поля
@@ -59,11 +96,13 @@ class NamespaceConfig(BaseModel):
     SSM_CP: Optional[str] = None
 
     SECMAN: Optional[SecManConfig] = None
+    ISTIO: Optional[IstioConfig] = None
     FLUENT_BIT: Optional[FluentBitConfig] = None
+    OTT: Optional[OttConfig] = None
 
     DYNAMIC_INVENTORY: Optional[DynamicInventoryConfig] = None
 
-    INJECTEDISTIO: Optional[ResourceSpec] = None
-    HASHICORP: Optional[ResourceSpec] = None
-    INGRESS: Optional[ResourceSpec] = None
-    EGRESS: Optional[ResourceSpec] = None
+    INJECTEDISTIO: Optional[ServiceConfig] = None
+    HASHICORP: Optional[ServiceConfig] = None
+    INGRESS: Optional[ServiceConfigWithResources] = None
+    EGRESS: Optional[ServiceConfigWithResources] = None

@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List, Optional
 
 class MtlsConfig(BaseModel):
@@ -26,5 +26,5 @@ class MtlsOttConfig(BaseModel):  # переименовано для PEP8
 class IntegrationConfig(BaseModel):
     MTLS: List[MtlsConfig] = "Укажи меня"
     KAFKA: List[KafkaConfig] = "Укажи меня"
-    INGRESS_WHITE_LIST: List[IngressWhiteListConfig] = "Укажи меня"
-    MTLS_OTT: List[MtlsOttConfig] = "Укажи меня"
+    INGRESS_WHITELIST: List[IngressWhiteListConfig] = "Укажи меня"
+    MTLS_OTT: Optional[List[MtlsOttConfig]] = Field(default_factory=list)

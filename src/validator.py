@@ -15,8 +15,8 @@ def validate(manifests_type, merged_dict):
     try:
         print("start final validate")
         final_obj = conf[f"{manifests_type}"](**merged_dict)
-        print("end final validate")
+        print(f"end final validate. manifest_type {manifests_type}")
     except Exception as e:
-        print(f"Финальная версия манифеста не вышла:{e}")
+        print(f"Финальная версия манифеста не вышла:{e}, manifests_type:{manifests_type}")
         sys.exit(1)
     return final_obj

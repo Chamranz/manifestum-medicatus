@@ -1,4 +1,5 @@
-from models.namespace import NamespaceConfig, SecManConfig, FluentBitConfig, IstioLogs, ResourceSpec, CpuMemoryResources
+from models.namespace import NamespaceConfig, SecManConfig, FluentBitConfig, IstioLogs, ResourceSpec, \
+    CpuMemoryResources, ServiceConfig, ServiceConfigWithResources
 
 
 def get_config():
@@ -13,54 +14,59 @@ def get_config():
             RESOURCES=ResourceSpec(
                 LIMITS=CpuMemoryResources(
                     CPU="50m",
-                    MEMORY="100mi",
+                    MEMORY="100Mi",
                 ),
                 REQUESTS=CpuMemoryResources(
                     CPU="50m",
-                    MEMORY="100mi",
+                    MEMORY="100Mi",
                 )
             )
         ),
-        INJECTEDISTIO=ResourceSpec(
-            LIMITS=CpuMemoryResources(
-                CPU="100m",
-                MEMORY="100mi",
+        INJECTEDISTIO=ServiceConfig(
+                LIMITS=CpuMemoryResources(
+                    CPU="100m",
+                    MEMORY="100Mi",
+                ),
+                REQUESTS=CpuMemoryResources(
+                    CPU="100m",
+                    MEMORY="50Mi",
+                )
             ),
-            REQUESTS=CpuMemoryResources(
-                CPU="100m",
-                MEMORY="50mi",
+
+        HASHICORP=ServiceConfig(
+                LIMITS=CpuMemoryResources(
+                    CPU="50m",
+                    MEMORY="100Mi",
+                ),
+                REQUESTS=CpuMemoryResources(
+                    CPU="50m",
+                    MEMORY="50Mi",
+                )
+        ),
+        INGRESS=ServiceConfigWithResources(
+            RESOURCES=ResourceSpec(
+                REPLICAS=1,
+                LIMITS=CpuMemoryResources(
+                    CPU="100m",
+                    MEMORY="100Mi",
+                ),
+                REQUESTS=CpuMemoryResources(
+                    CPU="100m",
+                    MEMORY="50Mi",
+                )
             )
         ),
-        HASHICORP=ResourceSpec(
-            LIMITS=CpuMemoryResources(
-                CPU="100m",
-                MEMORY="100mi",
-            ),
-            REQUESTS=CpuMemoryResources(
-                CPU="100m",
-                MEMORY="50mi",
-            )
-        ),
-        INGRESS=ResourceSpec(
-            REPLICAS=1,
-            LIMITS=CpuMemoryResources(
-                CPU="50m",
-                MEMORY="100mi",
-            ),
-            REQUESTS=CpuMemoryResources(
-                CPU="50m",
-                MEMORY="100mi",
-            )
-        ),
-        EGRESS=ResourceSpec(
-            REPLICAS=1,
-            LIMITS=CpuMemoryResources(
-                CPU="50m",
-                MEMORY="100mi",
-            ),
-            REQUESTS=CpuMemoryResources(
-                CPU="50m",
-                MEMORY="100mi",
+        EGRESS=ServiceConfigWithResources(
+            RESOURCES=ResourceSpec(
+                REPLICAS=1,
+                LIMITS=CpuMemoryResources(
+                    CPU="100m",
+                    MEMORY="100Mi",
+                ),
+                REQUESTS=CpuMemoryResources(
+                    CPU="100m",
+                    MEMORY="50Mi",
+                )
             )
         ),
     )

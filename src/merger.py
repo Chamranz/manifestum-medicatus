@@ -32,10 +32,21 @@ def deep_merge(base: Any, override: Any, merge_lists: bool = False) -> Any:
                 result[key] = deep_merge(result[key], value, merge_lists=merge_lists)
             else:
                 result[key] = value
+
+        if merge_lists and isinstance(base, list) and isinstance(override, list):
+            return base + override
+
         return result
 
-    elif merge_lists and isinstance(base, list) and isinstance(override, list):
-        return base + override
+    elif isinstance(base, list) and isinstance(override, list):
+        base_names = [base[i]["NAME"] for i in range(len(base))]
+        for item in override:
+            if item['NAME'] in base_names:
+                continue
+            else:
+                base.append(item)
+        return base
+
 
     else:
         return override
