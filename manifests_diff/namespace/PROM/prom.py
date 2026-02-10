@@ -14,7 +14,7 @@ def get_config():
             SBER_CA_KV_OTT_CLIENT_PATH="CI08967393_CI09889002/SBERCA/sberca-int-ec/fetch/client_1y_APPLAYER_ec",
             SBER_CA_KV_SERVER_PATH="CI08967393_CI09889002/SBERCA/sberca-int/fetch/server_3y_AS_rsa",
             SBER_CA_KV_CLIENT_PATH="CI08967393_CI09889002/SBERCA/sberca-int/fetch/client_3y_AS_rsa",
-            SBER_CA_CLIENT_CN="CI09708620-PROM-CI10663014-strategy-selection",
+            SBER_CA_CLIENT_CN="CI09708620-CI10663014-strategy-selection-prom",
             INGRESS_GW_SAN="strategy-selection-kvaefdrpa.omega.sbrf.ru,strategy-selection.ci09708620-strategy-selection.apps.a4sxasyr.k8s.ca.sbrf.ru,strategy-selection.ci09708620-strategy-selection.apps.a4sujmd3.k8s.ca.sbrf.ru"
         ),
         ISTIO=IstioConfig(
@@ -49,11 +49,12 @@ def get_config():
                     CPU="150m",
                     MEMORY="350Mi",
                 )
-            )
+            ),
+            OTT_OPER_MODE_INGRESS="provider_authz_local_pdp"
         ),
         DYNAMIC_INVENTORY=DynamicInventoryConfig(
             AUTH_TOKENS_URL="https://dyna.omega.sbrf.ru/api/v1/tokens/CI08967393",
-            DEPLOYMENTS_URL="https://dyna.sigma.sbrf.ru/api/v4/deployments/jenkins"
+            DEPLOYMENTS_URL="https://dyna.omega.sbrf.ru/api/v4/deployments/jenkins"
         )
     )
 

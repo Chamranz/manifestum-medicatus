@@ -49,7 +49,8 @@ def get_config():
                     CPU="150m",
                     MEMORY="350Mi",
                 )
-            )
+            ),
+            OTT_OPER_MODE_INGRESS="provider_authz_local_pdp"
         ),
         DYNAMIC_INVENTORY=DynamicInventoryConfig(
             AUTH_TOKENS_URL="https://dyna.sigma.sbrf.ru/api/v1/tokens/CI08967393",

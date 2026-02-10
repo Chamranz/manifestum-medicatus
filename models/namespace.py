@@ -4,6 +4,7 @@ from typing import Optional, List
 class CpuMemoryResources(BaseModel):
     CPU: str = "Укажи меня"
     MEMORY: Optional[str] = None
+    MEM: Optional[str] = None
 
 class ResourceSpec(BaseModel):
     REPLICAS: Optional[int] = None
@@ -68,6 +69,7 @@ class OttConfig(BaseModel):
     HOST: Optional[str] = None
     BILLING_ACCOUNT: Optional[str] = None
     RESOURCES: ResourceSpec = None
+    OTT_OPER_MODE_INGRESS: str = "Укажи меня"
 
 class DynamicInventoryConfig(BaseModel):
     AUTH_TOKENS_URL: str = "Укажи меня"

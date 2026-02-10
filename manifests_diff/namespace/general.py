@@ -25,18 +25,18 @@ def get_config():
         INJECTEDISTIO=ServiceConfig(
                 LIMITS=CpuMemoryResources(
                     CPU="100m",
-                    MEMORY="100Mi",
+                    MEM="100Mi",
                 ),
                 REQUESTS=CpuMemoryResources(
                     CPU="100m",
-                    MEMORY="50Mi",
+                    MEM="50Mi",
                 )
             ),
 
         HASHICORP=ServiceConfig(
                 LIMITS=CpuMemoryResources(
                     CPU="50m",
-                    MEMORY="100Mi",
+                    MEM="100Mi",
                 ),
                 REQUESTS=CpuMemoryResources(
                     CPU="50m",
