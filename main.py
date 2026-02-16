@@ -66,7 +66,7 @@ def main():
             merged_dict = {} # Инициализация дикта с конфигами
             for layer in LAYER[stand]:
                 try:
-                    print(f'start with layer {layer} and stand {stand}, manifest {manifest_name}')
+                    print(f' start with layer {layer} and stand {stand}, manifest {manifest_name}')
                     layer_dict = load_partial_config(manifest_name, layer)
                     merged_dict = deep_merge(merged_dict, layer_dict, merge_lists=False)
                 except Exception as e:

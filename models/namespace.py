@@ -4,6 +4,9 @@ from typing import Optional, List
 class CpuMemoryResources(BaseModel):
     CPU: str = "Укажи меня"
     MEMORY: Optional[str] = None
+
+class CpuMemoryResourcesMem(BaseModel):
+    CPU: str = "Укажи меня"
     MEM: Optional[str] = None
 
 class ResourceSpec(BaseModel):
@@ -40,7 +43,7 @@ class GeoroutePatternsConfig(BaseModel):
     PORT: int = 2442
 
 class GeoroutesConfig(BaseModel):
-    georoute_strategy_selection: List[GeoroutePatternsConfig] = "Укажи меня"
+    georoute_strategy_selection: GeoroutePatternsConfig = "Укажи меня"
 
 class PatternsAgentConfig(BaseModel):
     HOST: str = "Укажи меня"
@@ -79,8 +82,8 @@ class ServiceConfigWithResources(BaseModel):
     RESOURCES: ResourceSpec
 
 class ServiceConfig(BaseModel):
-    LIMITS: Optional[CpuMemoryResources] = None
-    REQUESTS: Optional[CpuMemoryResources] = None
+    LIMITS: Optional[CpuMemoryResourcesMem] = None
+    REQUESTS: Optional[CpuMemoryResourcesMem] = None
 
 class NamespaceConfig(BaseModel):
     # Обязательные корневые поля

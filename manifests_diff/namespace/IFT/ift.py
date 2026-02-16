@@ -22,10 +22,10 @@ def get_config():
                 NETWORKING_MTLS=NetworkingMtlsConfig(
                     strategy_selection=PatternsAgentConfig(
                         GEOROUTES=GeoroutesConfig(
-                            georoute_strategy_selection=[GeoroutePatternsConfig(
+                            georoute_strategy_selection=GeoroutePatternsConfig(
                                 HOST="strategy-selection-kvaefdrpa.delta.sbrf.ru",
                                 PORT=2442
-                            )]
+                            )
                         )
                     )
                 )

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GigaCodeAgentSettings">
+    <option name="autoApprovedCommands">
+      <list>
+        <Execute>
+          <option name="pattern" value="cp -r /Users/23200168/PycharmProject/manifestum-medicatus/models/* /Users/23200168/PycharmProject/manifestum-medicatus/manifestum_medicatus/models/" />
+        </Execute>
+        <Execute>
+          <option name="pattern" value="mkdir -p /Users/23200168/PycharmProject/manifestum-medicatus/manifestum_medicatus/cli" />
+        </Execute>
+        <Execute>
+          <option name="pattern" value="mkdir -p /Users/23200168/PycharmProject/manifestum-medicatus/manifestum_medicatus/core" />
+        </Execute>
+      </list>
+    </option>
+  </component>
+</project>

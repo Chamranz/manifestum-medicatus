@@ -15,7 +15,7 @@ def get_config():
             ),
             IngressWhiteListConfig(
                 NAME="lboss",
-                CN=".*CN=CI09708620-IFT-LBOSS,.*",
+                CN=".*CN=ci09708620-ift-lboss,.*",
                 PATH="/health/.*"
             )
         ]

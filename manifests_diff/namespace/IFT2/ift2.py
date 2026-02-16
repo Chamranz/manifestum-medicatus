@@ -6,7 +6,7 @@ def get_config():
         DROPAPP_CLUSTER='a4x981tp.k8s.delta.sbrf.ru',
         DROPAPP_CREDENTIAL_ID='a4x981tp_k8s_delta_sbrf_ru_dropapp',
         SECMAN=SecManConfig(
-            SBER_CA_SERVER_CN="strategy-selection.ci09708620-strategy-selection.apps.a4x981tp.k8s.delta.sbrf.ruu"
+            SBER_CA_SERVER_CN="strategy-selection.ci09708620-strategy-selection.apps.a4x981tp.k8s.delta.sbrf.ru"
         ),
         ISTIO=IstioConfig(
             INGRESS=IngressConfig(

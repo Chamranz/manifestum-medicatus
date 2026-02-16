@@ -1,5 +1,5 @@
 from models.namespace import NamespaceConfig, SecManConfig, FluentBitConfig, IstioLogs, ResourceSpec, \
-    CpuMemoryResources, ServiceConfig, ServiceConfigWithResources
+    CpuMemoryResources, CpuMemoryResourcesMem, ServiceConfig, ServiceConfigWithResources
 
 
 def get_config():
@@ -23,25 +23,25 @@ def get_config():
             )
         ),
         INJECTEDISTIO=ServiceConfig(
-                LIMITS=CpuMemoryResources(
-                    CPU="100m",
-                    MEM="100Mi",
-                ),
-                REQUESTS=CpuMemoryResources(
-                    CPU="100m",
-                    MEM="50Mi",
-                )
+            LIMITS=CpuMemoryResourcesMem(
+                CPU="100m",
+                MEM="100Mi",
             ),
+            REQUESTS=CpuMemoryResourcesMem(
+                CPU="100m",
+                MEM="50Mi",
+            )
+        ),
 
         HASHICORP=ServiceConfig(
-                LIMITS=CpuMemoryResources(
-                    CPU="50m",
-                    MEM="100Mi",
-                ),
-                REQUESTS=CpuMemoryResources(
-                    CPU="50m",
-                    MEMORY="50Mi",
-                )
+            LIMITS=CpuMemoryResourcesMem(
+                CPU="50m",
+                MEM="100Mi",
+            ),
+            REQUESTS=CpuMemoryResourcesMem(
+                CPU="50m",
+                MEM="50Mi",
+            )
         ),
         INGRESS=ServiceConfigWithResources(
             RESOURCES=ResourceSpec(
