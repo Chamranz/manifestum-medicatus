@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "manifestum-medicatus"
+version = "0.1.0"
+description = "A tool for automating configuration manifest merging and generation"
+readme = "README.md"
+authors = [{name = "Kamran", email = "kamran@example.com"}]
+license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+keywords = ["yaml", "configuration", "manifest", "merging", "automation"]
+requires-python = ">=3.9"
+dependencies = [
+    "pydantic>=2.0.0",
+    "PyYAML>=6.0",
+    "python-dotenv>=1.0.0"
+]
+
+[project.optional-dependencies]
+develop = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "flake8>=6.0.0",
+    "black>=23.0.0",
+    "mypy>=1.0.0"
+]
+
+[project.scripts]
+manifestum = "manifestum_medicatus.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["manifestum_medicatus*"]
+
+[tool.setuptools_scm]
+version_scheme = "guess-next-dev"
+local_scheme = "dirty-tag"
