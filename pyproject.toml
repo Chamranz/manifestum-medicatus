@@ -3,11 +3,11 @@ requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "manifestum-medicatus"
+name = "sber-kvaef-manifestum"
 version = "0.1.0"
 description = "A tool for automating configuration manifest merging and generation"
 readme = "README.md"
-authors = [{name = "Kamran", email = "kamran@example.com"}]
+authors = [{name = "Kamran", email = "kamran@FanOfHenryCavill.com"}]
 license = {text = "MIT"}
 classifiers = [
     "Development Status :: 3 - Alpha",
