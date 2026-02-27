@@ -1,24 +1,23 @@
 [build-system]
-requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+requires = ["setuptools>=64", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "sber-kvaef-manifestum"
 version = "0.1.0"
-description = "A tool for automating configuration manifest merging and generation"
+description = "Библиотека для генерации и валидации конфигураций манифестов"
 readme = "README.md"
 authors = [{name = "Kamran", email = "kamran@FanOfHenryCavill.com"}]
 license = {text = "MIT"}
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
 ]
-keywords = ["yaml", "configuration", "manifest", "merging", "automation"]
+keywords = ["yaml", "configuration", "manifest", "kubernetes", "sber"]
 requires-python = ">=3.9"
 dependencies = [
     "pydantic>=2.0.0",
@@ -27,21 +26,21 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-develop = [
+dev = [
     "pytest>=7.0.0",
     "pytest-cov>=4.0.0",
-    "flake8>=6.0.0",
     "black>=23.0.0",
     "mypy>=1.0.0"
 ]
 
 [project.scripts]
-manifestum = "manifestum_medicatus.cli:main"
+manifestum = "manifestum_medicatus.cli.main:main"  # ← ПРАВИЛЬНЫЙ ПУТЬ!
 
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["manifestum_medicatus*"]
+exclude = ["tests*", "docs*"]
 
-[tool.setuptools_scm]
-version_scheme = "guess-next-dev"
-local_scheme = "dirty-tag"
+[tool.black]
+line-length = 100
+target-version = ["py39", "py310", "py311"]

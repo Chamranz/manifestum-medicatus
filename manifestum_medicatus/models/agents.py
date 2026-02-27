@@ -38,4 +38,4 @@ class AgentConfig(BaseModel):
     AGENT_NAME: str = "Укажи меня братка"
     RESOURCES: Resources = "Укажи меня братка"
     PROBE: Probe = "Укажи меня братка"
-    ENV: Dict[str, Union[str,int,float]] = "Укажи меня"
+    ENV: Dict[str, Union[str,int]] = "Укажи меня"

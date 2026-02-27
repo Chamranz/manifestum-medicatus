@@ -3,14 +3,15 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 def deep_merge(base: Any, override: Any, merge_lists: bool = False) -> Any:
     """
     Рекурсивно объединяет два объекта.
-    
+
     - Если оба словари, то мерджим рекурсивно.
     - Если оба списки и `merge_lists=True` → конкатенируем.
     - Иначе override полностью заменяет base.
-    
+
     Args:
         base: базовое значение
         override: переопределяющее значение
@@ -24,7 +25,7 @@ def deep_merge(base: Any, override: Any, merge_lists: bool = False) -> Any:
 
         for key in base:
             if key not in override:
-                #logger.debug("Сохранено из базового конфига (отсутствует в override): %s = %r", key, base[key])
+                # logger.debug("Сохранено из базового конфига (отсутствует в override): %s = %r", key, base[key])
                 pass
 
         for key, value in override.items():
