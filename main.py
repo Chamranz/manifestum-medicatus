@@ -7,8 +7,6 @@ from src.merger import deep_merge
 
 import logging
 
-from manifests_diff import agents
-from manifests_diff.agents.PSI import psi
 from models.stub import StubConfig
 logging.basicConfig(level=logging.DEBUG)
 load_dotenv()

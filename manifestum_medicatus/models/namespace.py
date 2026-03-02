@@ -83,7 +83,7 @@ class ServiceConfigWithResources(BaseModel):
 
 class ServiceConfig(BaseModel):
     LIMITS: Optional[CpuMemoryResourcesMem] = None
-    REQUESTS: Optional[CpuMemoryResources] = None
+    REQUESTS: Optional[CpuMemoryResourcesMem] = None
 
 class NamespaceConfig(BaseModel):
     # Обязательные корневые поля
