@@ -95,7 +95,7 @@ def main() -> None:
 
     parser = argparse.ArgumentParser(description="Генерация конфигураций Manifestum Medicatus")
     parser.add_argument("--config-dir", default="manifests_diff", help="Директория с исходными конфигами")
-    parser.add_argument("--output-dir", default="merged_manifests", help="Директория для результатов")
+    parser.add_argument("--output-dir", default="./", help="Директория для результатов")
     parser.add_argument("--stands", nargs="+", default=None, help="Список стендов (по умолчанию все)")
     parser.add_argument("--verbose", action="store_true", help="Подробный вывод")
 
