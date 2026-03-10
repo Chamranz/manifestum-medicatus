@@ -38,17 +38,14 @@ class SecManConfig(BaseModel):
     INGRESS_CUSTOM_CA_KV_PATH: Optional[str] = None
     SECRET_FILES: Optional[List[str]] = None
 
-class GeoroutePatternsConfig(BaseModel):
+class GeoroutesConfig(BaseModel):
     HOST: str = "Укажи меня"
     PORT: int = 2442
-
-class GeoroutesConfig(BaseModel):
-    georoute_strategy_selection: GeoroutePatternsConfig = "Укажи меня"
 
 class PatternsAgentConfig(BaseModel):
     HOST: str = "Укажи меня"
     PORT: int = 5443
-    GEOROUTES: GeoroutesConfig = "Укажи меня"
+    GEOROUTES: Dict["str", GeoroutesConfig] = "Укажи меня"
 
 class IngressConfig(BaseModel):
     CONNECT_TIMEOUT: Optional[str] = None
