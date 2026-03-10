@@ -18,10 +18,10 @@ class Pyinstaller(BaseModel):
 
 class Assembly(BaseModel):
     baseImage: str = "Укажи меня"
-    runImage: Optional[str]
-    aefsdk: Optional[bool]
-    nuitka: Optional[Nuitka]
-    pyinstaller: Optional[Pyinstaller]
+    runImage: Optional[str] = None
+    aefsdk: bool = "Укажи меня"
+    nuitka: Optional[Nuitka] = None
+    pyinstaller: Optional[Pyinstaller] = None
 
 class AgentsBuild(BaseModel):
     name: str = "Укажи меня"
