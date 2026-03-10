@@ -10,15 +10,27 @@ class Aef(BaseModel):
     id: str = "Укажи меня"
     module_id: str = "Укажи меня"
 
+class Nuitka(BaseModel):
+    args: str = ""
+
+class Pyinstaller(BaseModel):
+    args: str = ""
+
+class Assembly(BaseModel):
+    baseImage: str = "Укажи меня"
+    runImage: Optional[str]
+    aefsdk: Optional[bool]
+    nuitka: Optional[Nuitka]
+    pyinstaller: Optional[Pyinstaller]
+
 class AgentsBuild(BaseModel):
     name: str = "Укажи меня"
     git: str = "Укажи меня"
     path: str = "Укажи меня"
-    baseImage: str = "Укажи меня"
+    assembly: Assembly = "укажи меня"
     compile: bool = False
     sonar_key: str = "Укажи меня",
     type: str = "pyhon",
-
 
 class SonarQube(BaseModel):
     # Наименование jenkins credentials в котором содержится токен для авторизации

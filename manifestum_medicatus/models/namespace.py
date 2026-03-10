@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional, List
+from typing import Optional, List, Dict
 
 class CpuMemoryResources(BaseModel):
     CPU: str = "Укажи меня"
@@ -50,15 +50,12 @@ class PatternsAgentConfig(BaseModel):
     PORT: int = 5443
     GEOROUTES: GeoroutesConfig = "Укажи меня"
 
-class NetworkingMtlsConfig(BaseModel):
-    strategy_selection: PatternsAgentConfig = "Укажи меня"
-
 class IngressConfig(BaseModel):
     CONNECT_TIMEOUT: Optional[str] = None
     READ_TIMEOUT: Optional[str] = None
     SEND_TIMEOUT: Optional[str] = None
-    NETWORKING_MTLS: NetworkingMtlsConfig
-    NETWORKING_OTT_MTLS: Optional[NetworkingMtlsConfig] = None
+    NETWORKING_MTLS: Dict[str, PatternsAgentConfig]
+    NETWORKING_OTT_MTLS: Dict[str, PatternsAgentConfig] = None
 
 class IstioConfig(BaseModel):
     INGRESS: IngressConfig = "Укажи меня"
