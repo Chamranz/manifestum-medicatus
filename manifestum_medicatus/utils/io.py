@@ -35,8 +35,7 @@ def dump_yaml(data: Dict[str, Any], output_path: Union[str, Path]) -> None:
 
 def save_manifests(
         manifests: Dict[str, Dict[str, Any]],
-        stands: list[str],
-        output_dir: Union[str, Path] = "merged_manifests"
+        stands: list[str]
 ) -> None:
     """
     Сохранение сгенерированных манифестов в файловую систему.
@@ -46,7 +45,6 @@ def save_manifests(
         stands: Список стендов для сохранения
         output_dir: Базовая директория для вывода
     """
-    output_dir = Path(output_dir)
 
     for manifest_type, stand_configs in manifests.items():
         for stand in stands:
@@ -55,8 +53,8 @@ def save_manifests(
 
             # Особая обработка для common манифеста
             if manifest_type == "common":
-                output_file = output_dir / manifest_type / "COMMON.yaml"
+                output_file = manifest_type / "COMMON.yaml"
             else:
-                output_file = output_dir / manifest_type / f"{stand}.yaml"
+                output_file = manifest_type / f"{stand}.yaml"
 
             dump_yaml(stand_configs[stand], output_file)
