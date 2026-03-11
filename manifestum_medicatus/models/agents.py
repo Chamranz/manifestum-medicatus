@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Dict, Optional, Union
+from typing import Dict, Union
 
 
 class CpuMemory(BaseModel):

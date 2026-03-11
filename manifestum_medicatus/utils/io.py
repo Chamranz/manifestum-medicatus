@@ -15,11 +15,12 @@ def load_yaml(path: Union[str, Path]) -> Dict[str, Any]:
         return yaml.safe_load(f) or {}
 
 
-def dump_yaml(data: Dict[str, Any], output_path: Union[str, Path]) -> None:
+def dump_yaml(data: Dict[str, Any], output_path: Union[str, Path], manifest_type: str) -> None:
     """Сохранение данных в YAML-файл."""
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
-
+    if manifest_type == "agents":
+        data = [data]
     with open(output_path, "w", encoding="utf-8") as f:
         yaml.safe_dump(
             data,
@@ -57,4 +58,4 @@ def save_manifests(
             else:
                 output_file = manifest_type / f"{stand}.yaml"
 
-            dump_yaml(stand_configs[stand], output_file)
+            dump_yaml(stand_configs[stand], output_file, manifest_type)
