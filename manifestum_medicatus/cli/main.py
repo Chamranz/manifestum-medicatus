@@ -79,15 +79,17 @@ def generate_manifests(config_dir: str, output_dir: str, stands: List[str] = Non
 
             # патч для agents
             if manifest_name == "agents":
+                print("Идем в agent при сохранении")
                 validated = [validated.model_dump()]
             else:
                 validated = validated.model_dump()
 
             output_file.parent.mkdir(parents=True, exist_ok=True)
             with open(output_file, "w", encoding="utf-8") as f:
-                yaml.safe_dump(
+                yaml.dump(
                     validated,
                     f,
+                    Dumper=yaml.Dumper,
                     allow_unicode=True,
                     default_flow_style=False,
                     sort_keys=False,
