@@ -63,7 +63,9 @@ def generate_manifests(config_dir: str, output_dir: str, stands: List[str] = Non
             for layer in LAYER_CONFIG[stand]:
                 try:
                     layer_config = load_partial_config(config_path, manifest_name, layer)
-                    merged = deep_merge(merged, layer_config, merge_lists=False)
+
+                    merge_lists_flag = (manifest_name == "integrations")  # ← только для интеграций
+                    merged = deep_merge(merged, layer_config, merge_lists=merge_lists_flag)
                 except Exception as e:
                     logging.error(f"Ошибка на слое {layer} для {stand}/{manifest_name}: {e}")
                     sys.exit(1)
