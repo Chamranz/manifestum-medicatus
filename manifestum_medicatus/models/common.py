@@ -23,21 +23,17 @@ class Assembly(BaseModel):
     nuitka: Optional[Nuitka] = None
     pyinstaller: Optional[Pyinstaller] = None
 
+class Sonar(BaseModel):
+    key: str = "Укажи меня",
+
 class AgentsBuild(BaseModel):
     name: str = "Укажи меня"
     git: str = "Укажи меня"
     path: str = "Укажи меня"
     assembly: Assembly = "укажи меня"
+    sonar: Sonar = "Укажи меня"
     compile: bool = False
-    sonar_key: str = "Укажи меня",
-    type: str = "pyhon",
-
-class SonarQube(BaseModel):
-    # Наименование jenkins credentials в котором содержится токен для авторизации
-    jenkins_cred: str = 'sonar-token'
-    # Сегмент SonarQube
-    installation_name: str = 'SonarQubeSigma'
-
+    type: str = "python",
 
 class QualityGates(BaseModel):
     mus_code: str = "Укажи меня"
@@ -53,6 +49,12 @@ class BuildCredentials(BaseModel):
     PASS_CREDENTIAL_ID: str = "Укажи меня"
     # Секрет с OSC токеном для PyPi
     OSC_TOKEN_CREDENTIAL_ID: str = "Укажи меня"
+
+class SonarQube(BaseModel):
+    # Наименование jenkins credentials в котором содержится токен для авторизации
+    jenkins_cred: str = 'sonar-token'
+    # Сегмент SonarQube
+    installation_name: str = 'SonarQubeSigma'
 
 class CommonConfig(BaseModel):
     hub: Hub = "Укажи меня"
