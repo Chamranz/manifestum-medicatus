@@ -12,12 +12,12 @@ class Host(BaseModel):
 
 class ClustersConfig(BaseModel):
     NAME: str = "Укажи меня"
-    HOSTS: Host = "Укажи меня"
+    HOSTS: List[Host] = "Укажи меня"
     MESH_PORT: int = "Укажи меня"
     PROTOCOL: str = "Укажи меня"
 
 class KafkaConfig(BaseModel):
-    CLUSTERS: ClustersConfig = "Укажи меня"
+    CLUSTERS: List[ClustersConfig] = "Укажи меня"
 
 class IngressWhiteListConfig(BaseModel):
     NAME: str = "Укажи меня"
@@ -32,6 +32,6 @@ class MtlsOttConfig(BaseModel):  # переименовано для PEP8
 
 class IntegrationConfig(BaseModel):
     MTLS: List[MtlsConfig] = "Укажи меня"
-    KAFKA: List[KafkaConfig] = "Укажи меня"
+    KAFKA: KafkaConfig = "Укажи меня"
     INGRESS_WHITELIST: List[IngressWhiteListConfig] = "Укажи меня"
     MTLS_OTT: Optional[List[MtlsOttConfig]] = Field(default_factory=list)
