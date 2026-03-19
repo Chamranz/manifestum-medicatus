@@ -6,11 +6,18 @@ class MtlsConfig(BaseModel):
     HOST: str = "Укажи меня"
     PORT: int = "Укажи меня"
 
-class KafkaConfig(BaseModel):
-    NAME: str = "Укажи меня"
+class Host(BaseModel):
     HOST: str = "Укажи меня"
-    IP: str = "Укажи меня"
     PORT: int = "Укажи меня"
+
+class ClustersConfig(BaseModel):
+    NAME: str = "Укажи меня"
+    HOSTS: Host = "Укажи меня"
+    MESH_PORT: int = "Укажи меня"
+    PROTOCOL: str = "Укажи меня"
+
+class KafkaConfig(BaseModel):
+    CLUSTERS: ClustersConfig = "Укажи меня"
 
 class IngressWhiteListConfig(BaseModel):
     NAME: str = "Укажи меня"
