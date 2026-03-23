@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sber-kvaef-manifestum"
-version = "0.2.6"
+version = "0.2.7"
 description = "Библиотека для генерации и валидации конфигураций манифестов"
 readme = "README.md"
 authors = [{name = "Kamran", email = "kamran@FanOfHenryCavill.com"}]

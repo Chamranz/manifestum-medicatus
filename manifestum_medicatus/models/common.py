@@ -25,6 +25,8 @@ class Assembly(BaseModel):
 
 class Sonar(BaseModel):
     key: str = "Укажи меня",
+    configFilepath: Optional[str] = None
+
 
 class AgentsBuild(BaseModel):
     name: str = "Укажи меня"
