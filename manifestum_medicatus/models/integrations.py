@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import List, Optional, Union
 
 class MtlsConfig(BaseModel):
     NAME: str = "Укажи меня"
@@ -34,4 +34,4 @@ class IntegrationConfig(BaseModel):
     MTLS: List[MtlsConfig] = "Укажи меня"
     KAFKA: KafkaConfig = "Укажи меня"
     INGRESS_WHITELIST: List[IngressWhiteListConfig] = "Укажи меня"
-    MTLS_OTT: Optional[List[MtlsOttConfig]] = Field(default_factory=list)
+    MTLS_OTT: Optional[List[Union[MtlsOttConfig, MtlsConfig]]] = Field(default_factory=list)
