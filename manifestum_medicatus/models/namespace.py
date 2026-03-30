@@ -45,14 +45,14 @@ class GeoroutesConfig(BaseModel):
 class PatternsAgentConfig(BaseModel):
     HOST: str = "Укажи меня"
     PORT: int = 5443
-    GEOROUTES: Dict["str", GeoroutesConfig] = "Укажи меня"
+    GEOROUTES: Optional[Dict["str", GeoroutesConfig]] = "Укажи меня"
 
 class IngressConfig(BaseModel):
     CONNECT_TIMEOUT: Optional[str] = None
     READ_TIMEOUT: Optional[str] = None
     SEND_TIMEOUT: Optional[str] = None
     NETWORKING_MTLS: Dict[str, PatternsAgentConfig]
-    NETWORKING_OTT_MTLS: Dict[str, PatternsAgentConfig] = None
+    NETWORKING_OTT_MTLS: Dict[str, PatternsAgentConfig]
 
 class IstioConfig(BaseModel):
     INGRESS: IngressConfig = "Укажи меня"
