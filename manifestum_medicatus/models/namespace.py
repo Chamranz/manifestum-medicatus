@@ -51,8 +51,8 @@ class IngressConfig(BaseModel):
     CONNECT_TIMEOUT: Optional[str] = None
     READ_TIMEOUT: Optional[str] = None
     SEND_TIMEOUT: Optional[str] = None
-    NETWORKING_MTLS: Dict[str, PatternsAgentConfig]
-    NETWORKING_OTT_MTLS: Dict[str, PatternsAgentConfig]
+    NETWORKING_MTLS: Optional[Dict[str, PatternsAgentConfig]] = "Укажи меня"
+    NETWORKING_OTT_MTLS: Optional[Dict[str, PatternsAgentConfig]] = "Укажи меня"
 
 class IstioConfig(BaseModel):
     INGRESS: IngressConfig = "Укажи меня"
