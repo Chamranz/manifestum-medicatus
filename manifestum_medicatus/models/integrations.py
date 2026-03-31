@@ -28,10 +28,10 @@ class MtlsOttConfig(BaseModel):  # переименовано для PEP8
     NAME: str = "Укажи меня"
     HOST: str = "Укажи меня"
     PORT: int = "Укажи меня"
-    INNERPORT: int = "Укажи меня"
+    INNERPORT: Optional[int] = "Укажи меня"
 
 class IntegrationConfig(BaseModel):
     MTLS: List[MtlsConfig] = "Укажи меня"
+    MTLS_OTT: Optional[List[MtlsOttConfig]] = Field(default_factory=list)
     KAFKA: KafkaConfig = "Укажи меня"
     INGRESS_WHITELIST: List[IngressWhiteListConfig] = "Укажи меня"
-    MTLS_OTT: Optional[List[Union[MtlsOttConfig, MtlsConfig]]] = Field(default_factory=list)
