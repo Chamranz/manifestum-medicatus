@@ -6,6 +6,12 @@ class MtlsConfig(BaseModel):
     HOST: str = "Укажи меня"
     PORT: int = "Укажи меня"
 
+class MtlsOttConfig(BaseModel):  # переименовано для PEP8
+    NAME: str = "Укажи меня"
+    HOST: str = "Укажи меня"
+    PORT: int = "Укажи меня"
+    INNERPORT: Optional[int]
+
 class Host(BaseModel):
     HOST: str = "Укажи меня"
     PORT: int = "Укажи меня"
@@ -23,12 +29,6 @@ class IngressWhiteListConfig(BaseModel):
     NAME: str = "Укажи меня"
     CN: str = "Укажи меня"
     PATH: str = "Укажи меня"
-
-class MtlsOttConfig(BaseModel):  # переименовано для PEP8
-    NAME: str = "Укажи меня"
-    HOST: str = "Укажи меня"
-    PORT: int = "Укажи меня"
-    INNERPORT: Optional[int] = "Укажи меня"
 
 class IntegrationConfig(BaseModel):
     MTLS: List[MtlsConfig] = "Укажи меня"

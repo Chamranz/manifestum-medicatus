@@ -45,7 +45,7 @@ class GeoroutesConfig(BaseModel):
 class PatternsAgentConfig(BaseModel):
     HOST: str = "Укажи меня"
     PORT: int = 5443
-    GEOROUTES: Optional[Dict["str", GeoroutesConfig]] = "Укажи меня"
+    GEOROUTES: Optional[Dict[str, GeoroutesConfig]]
 
 class IngressConfig(BaseModel):
     CONNECT_TIMEOUT: Optional[str] = None
