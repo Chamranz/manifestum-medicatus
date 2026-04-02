@@ -47,6 +47,19 @@ def load_partial_config(config_dir: Path, manifest_type: str, layer: str) -> Dic
         logging.warning(f"Ошибка в {file_path}, используем заглушку: {e}")
         return StubConfig().model_dump()
 
+def remove_none_values(data: Any) -> Any:
+    """Удаление ключей со знhачением None из словаря рекурсивно."""
+    if isinstance(data, dict):
+        return {
+            key: remove_none_values(value)
+            for key, value in data.items()
+            if value is not None
+        }
+    elif isinstance(data, list):
+        return [remove_none_values(item) for item in data]
+    else:
+        return data
+
 def generate_manifests(config_dir: str, output_dir: str, stands: List[str] = None) -> None:
     """Генерация манифестов для указанных стендов."""
     config_path = Path(config_dir)
@@ -85,6 +98,9 @@ def generate_manifests(config_dir: str, output_dir: str, stands: List[str] = Non
                 validated = [validated.model_dump()]
             else:
                 validated = validated.model_dump()
+
+            # Удаление ключей со значением None
+            validated = remove_none_values(validated)
 
             output_file.parent.mkdir(parents=True, exist_ok=True)
             with open(output_file, "w", encoding="utf-8") as f:
