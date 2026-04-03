@@ -16,7 +16,7 @@ class ResourceSpec(BaseModel):
 
 class IstioLogs(BaseModel):
     TOPIC: str = "Укажи меня"
-    BROKERS: str = "Укажи меня"
+    KAFKA_CLUSTER_NAME: str = "Укажи меня"
 
 class SecManConfig(BaseModel):
     HOST: str = "Укажи меня"
