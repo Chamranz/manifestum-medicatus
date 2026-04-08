@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional, List, Dict
 
 class CpuMemoryResources(BaseModel):
@@ -17,6 +17,16 @@ class ResourceSpec(BaseModel):
 class IstioLogs(BaseModel):
     TOPIC: str = "Укажи меня"
     KAFKA_CLUSTER_NAME: str = "Укажи меня"
+
+class PGConfig(BaseModel):
+    name: str = "Укажи меня",
+    path: str = "Укажи меня",
+    db_host: str = "Укажи меня",
+    db_port: str = "Укажи меня",
+    db_name: str = "Укажи меня",
+
+    custom_string: str = None
+    volume_path: str = None
 
 class SecManConfig(BaseModel):
     HOST: str = "Укажи меня"
@@ -37,6 +47,8 @@ class SecManConfig(BaseModel):
     EGRESS_CUSTOM_CA_KV_PATH: Optional[str] = None
     INGRESS_CUSTOM_CA_KV_PATH: Optional[str] = None
     SECRET_FILES: Optional[List[str]] = None
+
+    PG: Optional[List[PGConfig]] = None
 
 class GeoroutesConfig(BaseModel):
     HOST: str = "Укажи меня"
