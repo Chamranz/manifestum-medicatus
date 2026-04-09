@@ -27,7 +27,7 @@ class IngressWhiteListConfig(BaseModel):
 class PostgresConfig(BaseModel):
     NAME: str = "Укажи меня"
     HOST: str = "Укажи меня"
-    IP: int = "Укажи меня"
+    IP: str = "Укажи меня"
     PORT: str = "Укажи меня"
     INNERPORT: str = "Укажи меня"
 
