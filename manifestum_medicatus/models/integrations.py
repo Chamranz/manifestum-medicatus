@@ -29,6 +29,7 @@ class PostgresConfig(BaseModel):
     HOST: str = "Укажи меня"
     IP: int = "Укажи меня"
     PORT: str = "Укажи меня"
+    INNERPORT: str = "Укажи меня"
 
 class IntegrationConfig(BaseModel):
     MTLS: List[MtlsConfig] = "Укажи меня"
