@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, PostgresDsn
 from typing import List, Optional, Union
 
 class MtlsConfig(BaseModel):
@@ -24,8 +24,15 @@ class IngressWhiteListConfig(BaseModel):
     CN: str = "Укажи меня"
     PATH: str = "Укажи меня"
 
+class PostgresConfig(BaseModel):
+    NAME: str = "Укажи меня"
+    HOST: str = "Укажи меня"
+    IP: int = "Укажи меня"
+    PORT: str = "Укажи меня"
+
 class IntegrationConfig(BaseModel):
     MTLS: List[MtlsConfig] = "Укажи меня"
     MTLS_OTT: Optional[List[MtlsConfig]] = Field(default_factory=list)
     KAFKA: KafkaConfig = "Укажи меня"
     INGRESS_WHITELIST: List[IngressWhiteListConfig] = "Укажи меня"
+    POSTGRES: Optional[List[PostgresConfig]] = None
