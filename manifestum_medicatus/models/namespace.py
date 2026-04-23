@@ -69,8 +69,12 @@ class IngressConfig(BaseModel):
 class IstioConfig(BaseModel):
     INGRESS: IngressConfig = "Укажи меня"
 
+class AppLogconfig(BaseModel):
+    MOUNT_PATH: str = "/var/log/app"
+
 class FluentBitConfig(BaseModel):
     RESOURCES: ResourceSpec = "Укажи меня"
+    APP_LOG: AppLogconfig = "Укажи меня"
     IMAGE: Optional[str]  = None
     ISTIO_LOGS: Optional[IstioLogs] = None
 
