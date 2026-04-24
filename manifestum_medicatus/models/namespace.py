@@ -71,6 +71,9 @@ class IstioConfig(BaseModel):
 
 class AppLogconfig(BaseModel):
     MOUNT_PATH: str = "/var/log/app"
+    MOUNT_FILE: str = "app.log"
+    KAFKA_CLUSTER_NAME: Optional[str] = None
+    TOPIC: Optional[str] = None
 
 class FluentBitConfig(BaseModel):
     RESOURCES: ResourceSpec = "Укажи меня"
