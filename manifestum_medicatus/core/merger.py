@@ -1,8 +1,11 @@
 from typing import Any, Dict, List
 
 
-def deep_merge(base: Any, override: Any, merge_lists: bool = True) -> Any:
+def deep_merge(base: Any, override: Any, manifest_name, merge_lists: bool = True) -> Any:
     # Случай 1: оба — словари
+    if manifest_name == 'agents':
+        print(f"override {override}")
+
     if isinstance(base, dict) and isinstance(override, dict):
         result = base.copy()
         for key, value in override.items():
