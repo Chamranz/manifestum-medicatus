@@ -55,20 +55,27 @@ class ConfigComporator:
                         diffs[i][key] = v
                 continue
 
-            if all(v == values[0] for v in values):
-                if isinstance(values[0], dict):
-                    sub_common, sub_diffs = self.deep_compare([v for v in values])
+            first_val = values[0]
+
+            if all(v == first_val for v in values):
+                if isinstance(first_val, dict):
+                    sub_common, _ = self.deep_compare([first_val])
+                    common[key] = sub_common
+                else:
+                    common[key] = first_val
+            else:
+                if all(isinstance(v, dict) for v in values):
+                    sub_common, sub_diffs = self.deep_compare(values)
                     if sub_common:
                         common[key] = sub_common
                     for i, sd in enumerate(sub_diffs):
                         if sd:
-                            diffs[i][key] = sd
+                            diffs[i].setdefault(key, {}).update(sd)
                 else:
-                    common[key] = values[0]
-            else:
-                for i,v in enumerate(values):
-                    diffs[i][key] = v
+                    for i, v in enumerate(values):
+                        diffs[i][key] = v
         return common, diffs
+
 
 
 
