@@ -1,0 +1,62 @@
+hub:
+  # Имя хаба
+  name: "AI-HUB БТ"
+  # КЭ хаба (АС)
+  id: CI08967393
+
+aef:
+  # Имя фп аеф
+  name: "AI-HUB БТ.AEF Container ДРПА КВ Alpha"
+  # КЭ фп аеф
+  id: CI09708620
+  # id модуля (КЭ агента)
+  module_id: CI10662999
+
+agents:
+    # Имя агента
+  - name: "claim-terms"
+    # Ссылка на код
+    git: ssh://git@stash.sigma.sbrf.ru:7999/kvaef/claim-terms.git
+    # Путь к requirements txt
+    path: ./agents/claim_terms/v0.1
+    type: "python"
+    # Если используете для разработки агента aef sdk
+    aefsdk: true
+    # Начиная с 1.7 - обязательный ключ
+    assembly:
+      # Пример ссылки на базовый образ
+      baseImage: docker-internal.registry-ci.delta.sbrf.ru/ci04675739/ci04675739/python-3.12:9.6.2-se
+      # Если хотите собрать приложение в один пакет (не совместимо с nuitka)
+      pyinstaller:
+        args: ''
+    sonar:
+      key: "claim-terms"
+
+# Блок для Quality Gates
+qg:
+  # Код команды
+  mus_code: "00200044"
+  # Имя команды
+  mus_name: "Models"
+  mus_po_mail: "Loshak.D.I@sberbank.ru"
+  # КЭ агента
+  sm_id: "CI09708620"
+  # Имя агента
+  sm_name: "AI-HUB БТ.AEF Container ДРПА КВ Alpha"
+  jira_area: "AAA"
+
+# Подробнее о секретах в пререквизитах
+buildCredentials:
+  # Секрет с SSH ключами туза, который будет ходить в гит за исходным кодом
+  GIT_SSH_CREDENTIAL_ID: 'GIT_CONFIGS_CRED'
+  # Секрет с ТУЗом в формате tuz@delta.sbrf.ru + паролем от AD движка SecMan
+  PASS_CREDENTIAL_ID: 'cab-sa-dvo09991_AD_DOMAIN'
+  # Секрет с OSC токеном для PyPi
+  OSC_TOKEN_CREDENTIAL_ID: 'cab-sa-dvo09991_OSC_TOKEN'
+
+# Подключение SonarQube
+sonar_qube:
+  # Наименование jenkins credentials в котором содержится токен для авторизации
+  jenkins_cred: 'sonar-supertoken'
+  # Сегмент SonarQube
+  installation_name: 'SonarQubeSigma'

@@ -1,0 +1,83 @@
+# Определяем список Агентов
+
+  # Уникальный идентификатор агента (должен быть передан в составе дистрибутива). Required
+- AGENT_NAME: claim-terms
+  # Блок настройки ресурсов. Optional
+  RESOURCES:
+    # Количество реплик. Optional
+    REPLICAS: 2
+    LIMITS:
+      # Limits CPU. Optional
+      CPU: 350m
+      # Limits Memory. Optional
+      MEMORY: 512Mi
+    REQUESTS:
+      # Requests CPU. Optional
+      CPU: 150m
+      # Requests Memory. Optional
+      MEMORY: 256Mi
+  # Блок настройки Liveness и Readiness probe. Optional
+  PROBE:
+    # Параметры Readiness probe. Optional
+    READINESS:
+      # Время задержки (в секундах) перед первым выполнением. Optional
+      INITIAL_DELAY_SECONDS: 30
+      # Максимальное время ожидания ответа от приложения. Optional
+      TIMEOUT_SECONDS: 5
+      # Интервал между последовательными проверками. Optional
+      PERIOD_SECONDS: 60
+      # Количество подряд успешных проверок. Optional
+      SUCCESS_THRESHOLD: 1
+      # Количество подряд неудачных проверок. Optional
+      FAILURE_THRESHOLD: 3
+    # Параметры Liveness probe. Optional
+    LIVENESS:
+      # Время задержки (в секундах) перед первым выполнением. Optional
+      INITIAL_DELAY_SECONDS: 30
+      # Максимальное время ожидания ответа от приложения. Optional
+      TIMEOUT_SECONDS: 5
+      # Интервал между последовательными проверками. Optional
+      PERIOD_SECONDS: 60
+      # Количество подряд успешных проверок. Optional
+      SUCCESS_THRESHOLD: 1
+      # Количество подряд неудачных проверок. Optional
+      FAILURE_THRESHOLD: 3
+  # Блок с переменными окружения передаваемых агенту. Optional
+  ENV:
+    # Пример переменной окружения.
+    LOG_FILE: '/var/log/app/app.log'
+#    LOG_LEVEL: 'DEBUG'
+    # кэ агента (модуля)
+    AGENT_ID: 'CI10662999'
+
+    GIGACHAT_BASE_URL: 'http://gigachat.sberdevices.omega.sbrf.ru:8080/v1'
+    GIGACHAT_TIMEOUT: '60'
+    GIGACHAT_RETRY_LIMIT: '3'
+    GIGACHAT_RETRY_INCREMENT: '15'
+
+    # Флаг для перенаправления части трафика на PreView-версию GigaChat (по умолчанию false)
+    GIGACHAT_ENABLE_PREVIEW: 'true'
+    # Вероятность (доля трафика от 0 до 1), с которой запрос будет направлен на тестируемую PreView-версию вместо основной (по умолчанию 0.05)
+    GIGACHAT_PREVIEW_PROBABILITY: '0.05'
+
+
+    DOCUMENT_READER_BASE_URL: 'http://uvz-external-api-prom.omega.sbrf.ru:8080/document-reader/'
+    #DOCUMENT_READER_CERT_FILE=
+    #DOCUMENT_READER_KEY_FILE=
+    DOCUMENT_READER_TIMEOUT: '180'
+    DOCUMENT_READER_RETRY_LIMIT: '3'
+    DOCUMENT_READER_RETRY_INCREMENT: '30'
+
+
+    LIVENESS_PROBE_PATH: '/health/liveness'
+    READINESS_PROBE_PATH: '/health/readiness'
+
+    # Конфиг для трейсинга
+    TRACING_SERVICE_KAFKA_OUTBOX_TOPIC: 'tracingservice_BT_ALPHA'
+    TRACING_SERVICE_KAFKA_BOOTSTRAP_SERVERS: '[egress-kafka-aef-istio-logs.ci09708620-claim-terms.svc.cluster.local:19093]'
+    POD_NAMESPACE: 'ci09708620-claim-terms'
+
+#  # Список секретов SECMAN
+#  SECRET_ENV:
+#    - DB_USER
+#    - DB_PASSWORD
