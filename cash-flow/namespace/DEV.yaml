@@ -1,0 +1,60 @@
+GIT_SSH_CREDENTIAL_ID: GIT_CONFIGS_CRED
+PASS_CREDENTIAL_ID: cab-sa-dvo09991_AD_DOMAIN
+DROPAPP_CLUSTER: a3q0odr0.k8s.delta.sbrf.ru
+DROPAPP_CREDENTIAL_ID: a3q0odr0_k8s_delta_sbrf_ru_dropapp
+DROPAPP_NAMESPACE: ci09708620-cash-flow-compiler
+EIGW_NAMESPACE: ci09708620-cash-flow-compiler
+STAND_ID: CI09888999
+STAND_TYPE: IFT
+SECMAN:
+  HOST: t.secrets.delta.sbrf.ru
+  ROLE_NAME: ci09708620-cash-flow-compiler
+  NAMESPACE: CI08967393_CI09888999
+  SBER_CA_KV_SERVER_PATH: CI08967393_CI09888999/SBERCA/sberca-test-ext-g2/fetch/server_3y_AS_rsa
+  SBER_CA_KV_CLIENT_PATH: CI08967393_CI09888999/SBERCA/sberca-test-ext-g2/fetch/client_1y_APPLAYER_rsa
+  SBER_CA_CLIENT_CN: CI09708620-CI10663014-cash-flow-compiler-dev
+  SBER_CA_SERVER_CN: cash-flow-compiler.ci09708620-cash-flow-compiler.apps.a3q0odr0.k8s.delta.sbrf.ru
+  INGRESS_GW_SAN: cash-flow-compiler.ci09708620-cash-flow-compiler.apps.a3q0odr0.k8s.delta.sbrf.ru
+FLUENT_BIT:
+  RESOURCES:
+    LIMITS:
+      CPU: 50m
+      MEMORY: 100Mi
+    REQUESTS:
+      CPU: 50m
+      MEMORY: 100Mi
+DYNAMIC_INVENTORY:
+  AUTH_TOKENS_URL: https://dyna.sber.ru/api/v1/tokens/CI08967393
+  DEPLOYMENTS_URL: https://dyna.apps.ift-efs1-dm.delta.sbrf.ru/api/v4/deployments/jenkins
+INJECTEDISTIO:
+  LIMITS:
+    CPU: 100m
+    MEM: 100Mi
+  REQUESTS:
+    CPU: 100m
+    MEM: 50Mi
+HASHICORP:
+  LIMITS:
+    CPU: 50m
+    MEM: 100Mi
+  REQUESTS:
+    CPU: 50m
+    MEM: 50Mi
+INGRESS:
+  RESOURCES:
+    REPLICAS: 1
+    LIMITS:
+      CPU: 100m
+      MEMORY: 100Mi
+    REQUESTS:
+      CPU: 100m
+      MEMORY: 50Mi
+EGRESS:
+  RESOURCES:
+    REPLICAS: 1
+    LIMITS:
+      CPU: 100m
+      MEMORY: 100Mi
+    REQUESTS:
+      CPU: 100m
+      MEMORY: 50Mi

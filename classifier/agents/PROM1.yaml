@@ -1,0 +1,43 @@
+- AGENT_NAME: document-classifier
+  RESOURCES:
+    REPLICAS: 2
+    LIMITS:
+      CPU: 500m
+      MEMORY: 800Mi
+    REQUESTS:
+      CPU: 250m
+      MEMORY: 400Mi
+  PROBE:
+    READINESS:
+      INITIAL_DELAY_SECONDS: 30
+      TIMEOUT_SECONDS: 5
+      PERIOD_SECONDS: 60
+      SUCCESS_THRESHOLD: 1
+      FAILURE_THRESHOLD: 3
+    LIVENESS:
+      INITIAL_DELAY_SECONDS: 30
+      TIMEOUT_SECONDS: 5
+      PERIOD_SECONDS: 60
+      SUCCESS_THRESHOLD: 1
+      FAILURE_THRESHOLD: 3
+  ENV:
+    LOG_FILE: /var/log/app/app.log
+    AGENT_ID: CI10071809
+    GIGACHAT_TIMEOUT: '60'
+    GIGACHAT_RETRY_LIMIT: '3'
+    GIGACHAT_RETRY_INCREMENT: '15'
+    GIGACHAT_ENABLE_PREVIEW: 'true'
+    GIGACHAT_PREVIEW_PROBABILITY: '0.05'
+    DOCUMENT_READER_TIMEOUT: '180'
+    DOCUMENT_READER_RETRY_LIMIT: '3'
+    DOCUMENT_READER_RETRY_INCREMENT: '30'
+    LIVENESS_PROBE_PATH: /health/liveness
+    READINESS_PROBE_PATH: /health/readiness
+    NLTK_DATA: /app/resources/nltk_data
+    MYSTEM_BIN: /app/resources/mystem/mystem
+    POD_NAMESPACE: ci09708620-document-classifier
+    TRACING_SERVICE_KAFKA_BOOTSTRAP_SERVERS: '[egress-kafka-aef-istio-logs.ci09708620-document-classifier.svc.cluster.local:19093]'
+    REST_PROBE_PATH: /rest/health
+    GIGACHAT_BASE_URL: http://gigachat.sberdevices.omega.sbrf.ru:8080/v1
+    DOCUMENT_READER_BASE_URL: http://uvz-external-api-prom.omega.sbrf.ru:8080/document-reader/
+    TRACING_SERVICE_KAFKA_OUTBOX_TOPIC: tracingservice_BT_ALPHA

@@ -1,0 +1,32 @@
+MTLS:
+- NAME: mtls-gigachat
+  HOST: gigachat.sberdevices.omega.sbrf.ru
+  PORT: 443
+MTLS_OTT:
+- NAME: mtls-uvz-external-api
+  HOST: uvz-external-api-prom.omega.sbrf.ru
+  PORT: 8443
+KAFKA:
+  CLUSTERS:
+  - NAME: aef-istio-logs
+    HOSTS:
+    - HOST: pvloq-btaaf0006.omega.sbrf.ru
+      PORT: 9093
+    - HOST: pvloq-btaaf0008.omega.sbrf.ru
+      PORT: 9093
+    - HOST: pvloq-btaaf0009.omega.sbrf.ru
+      PORT: 9093
+    - HOST: pvloq-btaaf0007.omega.sbrf.ru
+      PORT: 9093
+    MESH_PORT: 19093
+    PROTOCOL: kafka
+INGRESS_WHITELIST:
+- NAME: uvz-old
+  CN: .*CN=ci00448961-prom-ecm,.*
+  PATH: .*
+- NAME: uvz
+  CN: .*CN=ci00448961-prom-ai-hub,.*
+  PATH: .*
+- NAME: lboss
+  CN: .*CN=ci09708620-prom-lboss,.*
+  PATH: /health/.*

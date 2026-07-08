@@ -1,0 +1,91 @@
+GIT_SSH_CREDENTIAL_ID: GIT_CONFIGS_CRED
+PASS_CREDENTIAL_ID: sa-odvp00004007_AD_DOMAIN
+DROPAPP_CLUSTER: a4sxasyr.k8s.ca.sbrf.ru
+DROPAPP_CREDENTIAL_ID: a4sxasyr_k8s_ca_sbrf_ru_dropapp
+DROPAPP_NAMESPACE: ci09708620-cash-flow-compiler
+EIGW_NAMESPACE: ci09708620-cash-flow-compiler
+STAND_ID: CI09889002
+STAND_TYPE: PROM
+SECMAN:
+  HOST: p.secrets.ca.sbrf.ru
+  ROLE_NAME: ci09708620-cash-flow-compiler
+  NAMESPACE: CI08967393_CI09889002
+  SBER_CA_KV_SERVER_PATH: CI08967393_CI09889002/SBERCA/sberca-int/fetch/server_3y_AS_rsa
+  SBER_CA_KV_CLIENT_PATH: CI08967393_CI09889002/SBERCA/sberca-int/fetch/client_1y_APPLAYER_rsa
+  SBER_CA_CLIENT_CN: CI09708620-CI10663014-cash-flow-compiler-prom
+  SBER_CA_SERVER_CN: cash-flow-compiler.ci09708620-cash-flow-compiler.apps.a4sxasyr.k8s.ca.sbrf.ru
+  INGRESS_GW_SAN: cash-flow-compiler-kvaefdrpa.omega.sbrf.ru,cash-flow-compiler-ott.ci09708620-cash-flow-compiler.apps.a4sxasyr.k8s.ca.sbrf.ru,cash-flow-compiler-ott.ci09708620-cash-flow-compiler.apps.a4sujmd3.k8s.ca.sbrf.ru,cash-flow-compiler.ci09708620-cash-flow-compiler.apps.a4sxasyr.k8s.ca.sbrf.ru
+  CERT_KV_PATH: CI08967393_CI09889002/A/CI09708620/JEN/MAIN/KV/certs
+  SBER_CA_OTT_CN: CI09708620-CI10663014-OTTYUL
+  SBER_CA_KV_OTT_CLIENT_PATH: CI08967393_CI09889002/SBERCA/sberca-int-ec/fetch/client_1y_APPLAYER_ec
+ISTIO:
+  INGRESS:
+    NETWORKING_MTLS:
+      cash-flow-compiler:
+        HOST: cash-flow-compiler.ci09708620-cash-flow-compiler.apps.a4sxasyr.k8s.ca.sbrf.ru
+        PORT: 5443
+    NETWORKING_OTT_MTLS:
+      cash-flow-compiler:
+        HOST: cash-flow-compiler-ott.ci09708620-cash-flow-compiler.apps.a4sxasyr.k8s.ca.sbrf.ru
+        PORT: 5445
+        GEOROUTES:
+          georoute-cash-flow-compiler:
+            HOST: cash-flow-compiler-kvaefdrpa.omega.sbrf.ru
+            PORT: 2446
+FLUENT_BIT:
+  RESOURCES:
+    LIMITS:
+      CPU: 50m
+      MEMORY: 100Mi
+    REQUESTS:
+      CPU: 50m
+      MEMORY: 100Mi
+  ISTIO_LOGS:
+    TOPIC: agentmetrics_BT_ALPHA
+    KAFKA_CLUSTER_NAME: aef-istio-logs
+OTT:
+  HOST: otts.prom.pprb-ul.omega.sbrf.ru
+  BILLING_ACCOUNT: CI09708620-CI10663014-OTTYUL
+  RESOURCES:
+    LIMITS:
+      CPU: 300m
+      MEMORY: 500Mi
+    REQUESTS:
+      CPU: 150m
+      MEMORY: 350Mi
+  OTT_OPER_MODE_INGRESS: provider_authz_local_pdp
+DYNAMIC_INVENTORY:
+  AUTH_TOKENS_URL: https://dyna.omega.sbrf.ru/api/v1/tokens/CI08967393
+  DEPLOYMENTS_URL: https://dyna.omega.sbrf.ru/api/v4/deployments/jenkins
+INJECTEDISTIO:
+  LIMITS:
+    CPU: 100m
+    MEM: 100Mi
+  REQUESTS:
+    CPU: 100m
+    MEM: 50Mi
+HASHICORP:
+  LIMITS:
+    CPU: 50m
+    MEM: 100Mi
+  REQUESTS:
+    CPU: 50m
+    MEM: 50Mi
+INGRESS:
+  RESOURCES:
+    REPLICAS: 1
+    LIMITS:
+      CPU: 100m
+      MEMORY: 100Mi
+    REQUESTS:
+      CPU: 100m
+      MEMORY: 50Mi
+EGRESS:
+  RESOURCES:
+    REPLICAS: 1
+    LIMITS:
+      CPU: 100m
+      MEMORY: 100Mi
+    REQUESTS:
+      CPU: 100m
+      MEMORY: 50Mi

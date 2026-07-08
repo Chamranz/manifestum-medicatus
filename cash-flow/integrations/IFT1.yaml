@@ -1,0 +1,35 @@
+MTLS:
+- NAME: mtls-gigachat
+  HOST: gigachat-ift.sberdevices.delta.sbrf.ru
+  PORT: 443
+MTLS_OTT:
+- NAME: mtls-uvz-external-api
+  HOST: uvz-external-api.delta.sbrf.ru
+  PORT: 8443
+KAFKA:
+  CLUSTERS:
+  - NAME: aef-istio-logs
+    HOSTS:
+    - HOST: tvldq-btaaf0003.delta.sbrf.ru
+      PORT: 9093
+    - HOST: tvldq-btaaf0001.delta.sbrf.ru
+      PORT: 9093
+    - HOST: tvldq-btaaf0002.delta.sbrf.ru
+      PORT: 9093
+    - HOST: tvldq-btaaf0005.delta.sbrf.ru
+      PORT: 9093
+    MESH_PORT: 19093
+    PROTOCOL: kafka
+INGRESS_WHITELIST:
+- NAME: allow-all-dev
+  CN: .*
+  PATH: .*
+- NAME: uvz-old
+  CN: .*CN=ci00448961-ift-ecm,.*
+  PATH: .*
+- NAME: uvz
+  CN: .*CN=ci00448961-ift-ai-hub,.*
+  PATH: .*
+- NAME: lboss
+  CN: .*CN=ci09708620-ift-lboss,.*
+  PATH: /health/.*

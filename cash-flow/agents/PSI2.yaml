@@ -1,0 +1,43 @@
+- AGENT_NAME: cash-flow-compiler
+  RESOURCES:
+    REPLICAS: 2
+    LIMITS:
+      CPU: 350m
+      MEMORY: 512Mi
+    REQUESTS:
+      CPU: 150m
+      MEMORY: 256Mi
+  PROBE:
+    READINESS:
+      INITIAL_DELAY_SECONDS: 30
+      TIMEOUT_SECONDS: 5
+      PERIOD_SECONDS: 60
+      SUCCESS_THRESHOLD: 1
+      FAILURE_THRESHOLD: 3
+    LIVENESS:
+      INITIAL_DELAY_SECONDS: 30
+      TIMEOUT_SECONDS: 5
+      PERIOD_SECONDS: 60
+      SUCCESS_THRESHOLD: 1
+      FAILURE_THRESHOLD: 3
+  ENV:
+    LOG_FILE: /var/log/app/app.log
+    AGENT_METRICS_LOG_FILE: /var/log/app/app.log
+    AGENT_ID: CI10663014
+    GIGACHAT_TIMEOUT: '60'
+    GIGACHAT_RETRY_LIMIT: '3'
+    GIGACHAT_RETRY_INCREMENT: '15'
+    GIGACHAT_ENABLE_PREVIEW: 'true'
+    GIGACHAT_PREVIEW_PROBABILITY: '0.05'
+    AI_AGENT_DATA_TIMEOUT: '60'
+    AI_AGENT_DATA_RETRY_LIMIT: '3'
+    AI_AGENT_DATA_RETRY_INCREMENT: '15'
+    LIVENESS_PROBE_PATH: /health/liveness
+    READINESS_PROBE_PATH: /health/readiness
+    TRACING_SERVICE_KAFKA_BOOTSTRAP_SERVERS: '[egress-kafka-aef-istio-logs.ci09708620-cash-flow-compiler.svc.cluster.local:19093]'
+    REST_PROBE_PATH: /rest/health
+    POD_NAMESPACE: ci09708620-cash-flow-compiler
+    LOG_LEVEL: DEBUG
+    GIGACHAT_BASE_URL: http://gigachat-psi.sberdevices.ca.sbrf.ru:8080/v1
+    AI_AGENT_DATA_BASE_URL: http://uvz-external-api-psi.omega.sbrf.ru:8080/ai-agent/
+    TRACING_SERVICE_KAFKA_OUTBOX_TOPIC: tracingservice_BT_ALPHA
