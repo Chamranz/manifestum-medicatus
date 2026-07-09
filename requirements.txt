@@ -9,4 +9,3 @@ python-dotenv==1.1.1
 PyYAML==6.0.2
 typing-inspection==0.4.1
 typing_extensions==4.15.0
-#
