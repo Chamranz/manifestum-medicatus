@@ -1,5 +1,6 @@
 from manifestum_medicatus.models.integrations import IntegrationConfig
 
+
 def get_config():
     integration = IntegrationConfig()
 

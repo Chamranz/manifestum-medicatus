@@ -1,5 +1,6 @@
 from manifestum_medicatus.models.agents import AgentConfig
 
+
 def get_config():
     agent = AgentConfig()
 

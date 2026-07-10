@@ -1,12 +1,7 @@
-from manifestum_medicatus.models.namespace import NamespaceConfig, SecManConfig
+from manifestum_medicatus.models.namespace import NamespaceConfig
 
 
 def get_config():
-    namespace = NamespaceConfig(
-        STAND_TYPE="IFT",
-        SECMAN=SecManConfig(
-            HOST="t.secrets.delta.sbrf.ru"
-        )
-    )
+    namespace = NamespaceConfig()
 
     return namespace.model_dump(exclude_unset=True)

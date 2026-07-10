@@ -77,7 +77,7 @@ class AppLogconfig(BaseModel):
 
 class FluentBitConfig(BaseModel):
     RESOURCES: ResourceSpec = "Укажи меня"
-    APP_LOG: AppLogconfig = "Укажи меня"
+    APP_LOG: Optional[AppLogconfig] = None
     IMAGE: Optional[str]  = None
     ISTIO_LOGS: Optional[IstioLogs] = None
 

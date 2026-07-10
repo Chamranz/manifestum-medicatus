@@ -39,7 +39,7 @@ def _get_config_path(config_dir: Path, manifest_type: str, scope: str, layer: st
     - manifest=agents, scope=all, layer=general
       → manifests_diff/agents/all/general.py
     - manifest=agents, scope=classifier, layer=PREPROM
-      → manifests_diff/agents/classifier/PREPROM/classifier/classifier.py
+      → manifests_diff/agents/classifier/PREPROM/preprom.py
     - manifest=common, scope=all, layer=general
       → manifests_diff/common/all/general.py
     """
@@ -47,11 +47,8 @@ def _get_config_path(config_dir: Path, manifest_type: str, scope: str, layer: st
     if layer == "general":
         return config_dir / manifest_type / scope / "general.py"
 
-    # остальные слои: scope/layer/{agent_or_layer}.py
-    # для all: PREPROM/preprom.py
-    # для agent: PREPROM/classifier/classifier.py
-    suffix = scope if scope != "all" else layer.lower()
-    return config_dir / manifest_type / scope / layer / f"{suffix}.py"
+    # остальные слои: scope/layer/{layer}.py, независимо от scope (all или агент)
+    return config_dir / manifest_type / scope / layer / f"{layer.lower()}.py"
 
 
 def load_partial_config(config_dir: Path, manifest_type: str, scope: str, layer: str) -> Optional[Dict[str, Any]]:
@@ -228,24 +225,80 @@ def main() -> None:
     import argparse
 
     parser = argparse.ArgumentParser(description="Генерация конфигураций Manifestum Medicatus")
-    parser.add_argument("--config-dir", default="manifests_diff", help="Директория с исходными конфигами")
-    parser.add_argument("--output-dir", default="./output", help="Директория для результатов")
-    parser.add_argument("--stands", nargs="+", default=None, help="Список стендов (по умолчанию все)")
-    parser.add_argument("--agents", nargs="+", default=None, help="Список агентов для генерации")
-    parser.add_argument("--verbose", action="store_true", help="Подробный вывод")
+    subparsers = parser.add_subparsers(dest="command")
+
+    gen = subparsers.add_parser("generate", help="Сгенерировать YAML-манифесты из manifests_diff")
+    gen.add_argument("--config-dir", default="manifests_diff", help="Директория с исходными конфигами")
+    gen.add_argument("--output-dir", default="./output", help="Директория для результатов")
+    gen.add_argument("--stands", nargs="+", default=None, help="Список стендов (по умолчанию все)")
+    gen.add_argument("--agents", nargs="+", default=None, help="Список агентов для генерации")
+    gen.add_argument("--verbose", action="store_true", help="Подробный вывод")
+
+    imp = subparsers.add_parser(
+        "import-agent",
+        help="Импортировать уже готовые yaml-манифесты агента(ов) в manifests_diff",
+    )
+    imp.add_argument("--config-dir", default="manifests_diff", help="Директория с manifests_diff")
+    imp.add_argument(
+        "--agent", action="append", required=True, metavar="SCOPE=PATH",
+        help="scope=путь_к_папке_с_готовыми_yaml; можно указывать несколько раз "
+             "(--agent cash_flow=cash-flow --agent document_classifier=classifier). "
+             "Общее для всех переданных агентов автоматически выносится в scope=all.",
+    )
+    imp.add_argument("--verbose", action="store_true", help="Подробный вывод")
+
+    onboard = subparsers.add_parser(
+        "onboard-agent",
+        help="Создать заготовку нового агента в manifests_diff по КЭ и имени агента",
+    )
+    onboard.add_argument("--config-dir", default="manifests_diff", help="Директория с manifests_diff")
+    onboard.add_argument("--agent-scope", required=True, help="Имя папки-слоя, например claim_terms")
+    onboard.add_argument("--agent-name", required=True, help="Имя агента в k8s/AEF, например claim-terms")
+    onboard.add_argument("--ci", required=True, help="КЭ модуля агента, например CI10071234")
+    onboard.add_argument("--verbose", action="store_true", help="Подробный вывод")
 
     args = parser.parse_args()
+    command = args.command or "generate"
     logging.basicConfig(
-        level=logging.DEBUG if args.verbose else logging.INFO,
+        level=logging.DEBUG if getattr(args, "verbose", False) else logging.INFO,
         format="%(levelname)s: %(message)s"
     )
 
-    generate_manifests(
-        config_dir=args.config_dir,
-        output_dir=args.output_dir,
-        stands=args.stands,
-        agents=args.agents
-    )
+    if command == "generate":
+        generate_manifests(
+            config_dir=args.config_dir,
+            output_dir=args.output_dir,
+            stands=args.stands,
+            agents=args.agents
+        )
+    elif command == "import-agent":
+        from pathlib import Path
+        from ..core.importer import bootstrap_agents, bootstrap_common
+
+        sources = {}
+        for item in args.agent:
+            scope, _, path = item.partition("=")
+            if not scope or not path:
+                parser.error(f"--agent должен быть в формате scope=путь, получено: {item!r}")
+            sources[scope] = Path(path)
+
+        written = bootstrap_agents(Path(args.config_dir), sources)
+        common_file = bootstrap_common(Path(args.config_dir), sources)
+        for scope, files in written.items():
+            logging.info(f"[{scope}] записано файлов: {len(files)}")
+        if common_file:
+            logging.info(f"[common/all] записано: {common_file}")
+    elif command == "onboard-agent":
+        from pathlib import Path
+        from ..core.onboarding import scaffold_agent
+
+        written = scaffold_agent(
+            Path(args.config_dir), args.agent_scope, args.agent_name, args.ci
+        )
+        for manifest_type, files in written.items():
+            logging.info(f"[{manifest_type}] записано файлов: {len(files)}")
+    else:
+        parser.error(f"Неизвестная команда: {command}")
 
 
 if __name__ == "__main__":
