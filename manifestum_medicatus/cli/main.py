@@ -1,7 +1,7 @@
 import os
 import sys
 import logging
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Set
 from pathlib import Path
 import yaml
 
@@ -26,6 +26,9 @@ MANIFEST_NAMES = ["agents", "common", "integrations", "namespace"]
 
 # Манифесты, которые НЕ имеют агент-специфичных конфигов
 NO_AGENT_MANIFESTS = {"common"}
+
+# Директории, которые НЕ являются агентами (служебные)
+_NON_AGENT_SCOPES = {"all", "__pycache__"}
 
 
 def _get_config_path(config_dir: Path, manifest_type: str, scope: str, layer: str) -> Path:
@@ -158,6 +161,31 @@ def _save_manifest(
     logging.info(f"✓ Сохранено: {output_file}")
 
 
+def _detect_agent_scopes(config_dir: Path, manifest_type: str) -> List[str]:
+    """
+    Авто-определение всех существующих агентов в manifests_diff.
+
+    Сканирует директорию manifests_diff/<manifest_type>/ и возвращает имена
+    поддиректорий, которые не являются служебными (all, __pycache__).
+    Агентом считается scope, у которого есть хотя бы general.py.
+    """
+    manifest_path = config_dir / manifest_type
+    if not manifest_path.exists():
+        return []
+
+    scopes: List[str] = []
+    for entry in sorted(manifest_path.iterdir()):
+        if not entry.is_dir():
+            continue
+        if entry.name in _NON_AGENT_SCOPES:
+            continue
+        # Считаем директорию агентом, если в ней есть general.py
+        if (entry / "general.py").exists():
+            scopes.append(entry.name)
+
+    return scopes
+
+
 def generate_manifests(
         config_dir: str,
         output_dir: str,
@@ -170,6 +198,9 @@ def generate_manifests(
     1. Сначала грузим и мерджим слои из scope="all" (общие для всех агентов)
     2. Если указан агент — грузим и мерджим слои из scope={agent} поверх общих
     3. Для манифеста "common" шаг 2 пропускается
+
+    Если --agents не указан, автоматически определяются все существующие агенты
+    в manifests_diff и генерация происходит для каждого из них.
     """
     config_path = Path(config_dir)
     output_path = Path(output_dir)
@@ -178,6 +209,15 @@ def generate_manifests(
     for manifest_name in MANIFEST_NAMES:
         merge_lists = (manifest_name == "integrations")
         has_agent_scope = manifest_name not in NO_AGENT_MANIFESTS
+
+        # Если агенты не указаны явно — авто-определяем для этого типа манифеста
+        effective_agents: Optional[List[str]] = agents
+        if has_agent_scope and effective_agents is None:
+            effective_agents = _detect_agent_scopes(config_path, manifest_name)
+            if effective_agents:
+                logging.info(
+                    f"[{manifest_name}] Агенты не указаны, авто-определено: {effective_agents}"
+                )
 
         for stand in stands:
             if stand not in STAND_LAYERS:
@@ -194,8 +234,8 @@ def generate_manifests(
             )
 
             # === ШАГ 2: Если манифест поддерживает агентов — мерджим агент-специфичные ===
-            if has_agent_scope and agents:
-                for agent in agents:
+            if has_agent_scope and effective_agents:
+                for agent in effective_agents:
                     logging.info(f"[{manifest_name}/{stand}/{agent}] Наложение агент-слоёв")
 
                     agent_config = merge_layer_chain(
@@ -214,9 +254,9 @@ def generate_manifests(
                 # === Для common: сохраняем только all-конфиг ===
                 _save_manifest(base_config, manifest_name, stand, None, output_path)
 
-            elif has_agent_scope and not agents:
-                # === Если агенты не указаны, но манифест их поддерживает — сохраняем только all ===
-                logging.info(f"[{manifest_name}/{stand}] Сохраняем только all-конфиг (агенты не указаны)")
+            elif has_agent_scope and not effective_agents:
+                # === Если агентов нет ни указанных, ни авто-определённых — сохраняем только all ===
+                logging.info(f"[{manifest_name}/{stand}] Агенты не найдены, сохраняем только all-конфиг")
                 _save_manifest(base_config, manifest_name, stand, None, output_path)
 
 

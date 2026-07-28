@@ -1,4 +1,4 @@
-# Manifestum Medicatus
+2# Manifestum Medicatus
 
 *(от лат. «манифестовое волшебство»)*
 
@@ -92,11 +92,12 @@ manifestum generate \
 ```
 
 `--stands` и `--agents` не обязательны: без `--stands` берутся все 7, без `--agents`
-для манифестов, зависящих от агента, сохранится только `scope=all` версия
-(`{stand}_all.yaml`).
+автоматически определяются все существующие агенты в `manifests_diff` и генерация
+происходит для каждого из них.
 
 Результат — `output/<manifest_type>/<agent>/<STAND>.yaml` (для `common` — один файл
-`output/common/COMMON.yaml`, см. ограничение ниже).
+`output/common/COMMON.yaml`, см. ограничение ниже). Каждый агент получает свою
+отдельную директорию с манифестами по стендам.
 
 ### 3.2. `import-agent` — затащить уже готовые yaml в manifests_diff
 
