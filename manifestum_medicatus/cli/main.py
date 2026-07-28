@@ -136,15 +136,19 @@ def _save_manifest(
     validated = remove_none_values(validated)
 
     # Формирование пути сохранения
-    if manifest_name == "common":
-        # common не зависит ни от стенда, ни от агента
-        output_file = output_path / "common" / "COMMON.yaml"
-    elif agent:
-        # агент-специфичный конфиг
-        output_file = output_path / manifest_name / agent / f"{stand}.yaml"
+    # Структура: output/<agent>/<manifest_type>/<STAND>.yaml
+    # Для common: output/<agent>/common/COMMON.yaml
+    if agent:
+        if manifest_name == "common":
+            output_file = output_path / agent / "common" / "COMMON.yaml"
+        else:
+            output_file = output_path / agent / manifest_name / f"{stand}.yaml"
     else:
-        # только _all конфиг (без агента)
-        output_file = output_path / manifest_name / f"{stand}_all.yaml"
+        # Без агента — плоская структура (только all)
+        if manifest_name == "common":
+            output_file = output_path / "common" / "COMMON.yaml"
+        else:
+            output_file = output_path / manifest_name / f"{stand}_all.yaml"
 
     output_file.parent.mkdir(parents=True, exist_ok=True)
 
@@ -201,23 +205,30 @@ def generate_manifests(
 
     Если --agents не указан, автоматически определяются все существующие агенты
     в manifests_diff и генерация происходит для каждого из них.
+
+    Структура выхлопа:
+      output/<agent>/agents/<STAND>.yaml
+      output/<agent>/common/COMMON.yaml
+      output/<agent>/integrations/<STAND>.yaml
+      output/<agent>/namespace/<STAND>.yaml
     """
     config_path = Path(config_dir)
     output_path = Path(output_dir)
     stands = stands or list(STAND_LAYERS.keys())
 
+    # Если агенты не указаны явно — авто-определяем по manifests_diff
+    # (сканируем agents/, т.к. это единственный тип, где гарантированно есть все агенты)
+    effective_agents: Optional[List[str]] = agents
+    if effective_agents is None:
+        effective_agents = _detect_agent_scopes(config_path, "agents")
+        if effective_agents:
+            logging.info(
+                f"Агенты не указаны, авто-определено: {effective_agents}"
+            )
+
     for manifest_name in MANIFEST_NAMES:
         merge_lists = (manifest_name == "integrations")
         has_agent_scope = manifest_name not in NO_AGENT_MANIFESTS
-
-        # Если агенты не указаны явно — авто-определяем для этого типа манифеста
-        effective_agents: Optional[List[str]] = agents
-        if has_agent_scope and effective_agents is None:
-            effective_agents = _detect_agent_scopes(config_path, manifest_name)
-            if effective_agents:
-                logging.info(
-                    f"[{manifest_name}] Агенты не указаны, авто-определено: {effective_agents}"
-                )
 
         for stand in stands:
             if stand not in STAND_LAYERS:
@@ -233,29 +244,34 @@ def generate_manifests(
                 base_layers=base_layers, merge_lists=merge_lists
             )
 
-            # === ШАГ 2: Если манифест поддерживает агентов — мерджим агент-специфичные ===
-            if has_agent_scope and effective_agents:
+            # === ШАГ 2: Если есть агенты — мерджим агент-специфичные слои ===
+            if effective_agents:
                 for agent in effective_agents:
-                    logging.info(f"[{manifest_name}/{stand}/{agent}] Наложение агент-слоёв")
+                    # Для common нет agent-scope, используем только all-конфиг
+                    if has_agent_scope:
+                        logging.info(f"[{manifest_name}/{stand}/{agent}] Наложение агент-слоёв")
 
-                    agent_config = merge_layer_chain(
-                        config_path, manifest_name, scope=agent,
-                        base_layers=base_layers, merge_lists=merge_lists
-                    )
+                        agent_config = merge_layer_chain(
+                            config_path, manifest_name, scope=agent,
+                            base_layers=base_layers, merge_lists=merge_lists
+                        )
 
-                    # Финальный мердж: all + agent (agent переопределяет all)
-                    final_config = deep_merge(
-                        base_config, agent_config, manifest_name, merge_lists=merge_lists
-                    )
+                        # Финальный мердж: all + agent (agent переопределяет all)
+                        final_config = deep_merge(
+                            base_config, agent_config, manifest_name, merge_lists=merge_lists
+                        )
+                    else:
+                        # Для common — только all-конфиг (без наложения agent-слоёв)
+                        final_config = base_config
 
                     _save_manifest(final_config, manifest_name, stand, agent, output_path)
 
             elif not has_agent_scope:
-                # === Для common: сохраняем только all-конфиг ===
+                # === Для common без агентов: сохраняем только all-конфиг ===
                 _save_manifest(base_config, manifest_name, stand, None, output_path)
 
-            elif has_agent_scope and not effective_agents:
-                # === Если агентов нет ни указанных, ни авто-определённых — сохраняем только all ===
+            else:
+                # === Агентов нет, но манифест их поддерживает — сохраняем только all ===
                 logging.info(f"[{manifest_name}/{stand}] Агенты не найдены, сохраняем только all-конфиг")
                 _save_manifest(base_config, manifest_name, stand, None, output_path)
 
