@@ -25,7 +25,8 @@ STAND_LAYERS = {
 MANIFEST_NAMES = ["agents", "common", "integrations", "namespace"]
 
 # Манифесты, которые НЕ имеют агент-специфичных конфигов
-NO_AGENT_MANIFESTS = {"common"}
+# common теперь имеет agent-scope (aef.module_id, agents[]), поэтому убран из этого множества.
+NO_AGENT_MANIFESTS: set = set()
 
 # Директории, которые НЕ являются агентами (служебные)
 _NON_AGENT_SCOPES = {"all", "__pycache__"}
@@ -339,11 +340,11 @@ def main() -> None:
             sources[scope] = Path(path)
 
         written = bootstrap_agents(Path(args.config_dir), sources)
-        common_file = bootstrap_common(Path(args.config_dir), sources)
+        common_written = bootstrap_common(Path(args.config_dir), sources)
         for scope, files in written.items():
             logging.info(f"[{scope}] записано файлов: {len(files)}")
-        if common_file:
-            logging.info(f"[common/all] записано: {common_file}")
+        for scope, files in common_written.items():
+            logging.info(f"[common/{scope}] записано файлов: {len(files)}")
     elif command == "onboard-agent":
         from pathlib import Path
         from ..core.onboarding import scaffold_agent

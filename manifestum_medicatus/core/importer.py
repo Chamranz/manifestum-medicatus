@@ -187,20 +187,31 @@ def bootstrap_agents(
     return written
 
 
-def bootstrap_common(config_dir: Path, sources: Dict[str, Path]) -> Optional[str]:
+def bootstrap_common(config_dir: Path, sources: Dict[str, Path]) -> Dict[str, List[str]]:
     """
     Выносит в common/all/general.py параметры, одинаковые у всех переданных агентов в COMMON.yaml
-    (hub, aef.name/id, sonar_qube, qg, buildCredentials). Агент-специфичные поля (aef.module_id,
-    agents[]) не пишутся: common пока не поддерживает agent-scope в генераторе (см. NO_AGENT_MANIFESTS).
+    (hub, aef.name/id, sonar_qube, qg, buildCredentials), а агент-специфичные поля (aef.module_id,
+    agents[]) записывает в common/{scope}/general.py для каждого агента.
     """
     finals = []
     for agent, path in sources.items():
         data = yaml.safe_load((path / "common" / "COMMON.yaml").read_text(encoding="utf-8")) or {}
         finals.append(data)
 
-    common, _diffs = _deep_compare(finals)
+    common, diffs = _deep_compare(finals)
+    written: Dict[str, List[str]] = {"all": [], **{name: [] for name in sources}}
+
+    # Общая часть — в common/all/general.py
     common = common or {}
-    if not common:
-        return None
-    p = _write_layer_file(config_dir, "common", "all", "general", common, exclude_none=True)
-    return str(p)
+    if common:
+        p = _write_layer_file(config_dir, "common", "all", "general", common, exclude_none=True)
+        written["all"].append(str(p))
+
+    # Агент-специфичные остатки — в common/{scope}/general.py
+    for agent, diff in zip(sources.keys(), diffs):
+        diff = diff or {}
+        if diff:
+            p = _write_layer_file(config_dir, "common", agent, "general", diff, exclude_none=True)
+            written[agent].append(str(p))
+
+    return written

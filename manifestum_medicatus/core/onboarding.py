@@ -53,7 +53,7 @@ def scaffold_agent(config_dir: Path, agent_scope: str, agent_name: str, ci: str)
     # (SBER_CA_CLIENT_CN и т.п.) КЭ/aef.id остаются как в CMDB, т.е. uppercase "CI...".
     aef_id_lc = aef_id.lower()
 
-    written: Dict[str, List[str]] = {"agents": [], "namespace": []}
+    written: Dict[str, List[str]] = {"agents": [], "common": [], "namespace": []}
 
     # --- agents/{scope}/general.py ---
     agents_general = {
@@ -67,6 +67,32 @@ def scaffold_agent(config_dir: Path, agent_scope: str, agent_name: str, ci: str)
     }
     p = _write_layer_file(config_dir, "agents", agent_scope, "general", agents_general)
     written["agents"].append(str(p))
+
+    # --- common/{scope}/general.py: module_id и agents[] для этого агента ---
+    common_general = {
+        "aef": {
+            "module_id": ci,
+        },
+        "agents": [
+            {
+                "name": agent_name,
+                "git": f"ssh://git@stash.sigma.sbrf.ru:7999/kvaef/{agent_name}.git",
+                "path": f"./agents/{agent_scope}/v0.1",
+                "assembly": {
+                    "baseImage": "docker-internal.registry-ci.delta.sbrf.ru/ci04675739/ci04675739/python-3.12:9.6.2-se",
+                    "aefsdk": True,
+                    "pyinstaller": {"args": ""},
+                },
+                "sonar": {
+                    "key": agent_name,
+                },
+                "compile": False,
+                "type": "python",
+            },
+        ],
+    }
+    p = _write_layer_file(config_dir, "common", agent_scope, "general", common_general)
+    written["common"].append(str(p))
 
     # --- namespace/{scope}/*: собираем по каждому слою, чтобы не перезаписать друг друга ---
     ns_layers: Dict[str, Dict[str, Any]] = {layer: {} for layer in LAYER_KEYS}
